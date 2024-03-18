@@ -66,15 +66,50 @@ def checkIsland(pirate):
     else:
         return False
 
+def move_horizontal_line(pirate,curr_x,curr_y,direction=1): #1 for right, 0 for left
+    if(direction==1):
+        if pirate.investigate_right[0]=="wall":
+            return 0
+        else:
+            moveTo(curr_x+1,curr_y)
+            return 1
+    if (direction==0):
+        if pirate.investigate_left[0]=="wall":
+            return 0
+        else:
+            moveTo(curr_x-1,curr_y)
+            return 1
+
+def move_vertical_line(pirate,curr_x,curr_y,direction=1): #1 for down, 0 for up
+    if(direction==1):
+        if pirate.investigate_down[0]=="wall":
+            return 0
+        else:
+            moveTo(curr_x,curr_y+1)
+            return 1
+    if (direction==0):
+        if pirate.investigate_up[0]=="wall":
+            return 0
+        else:
+            moveTo(curr_x,curr_y-1)
+            return 1        
+        
+
+
+
 
 def ActPirate(pirate):
     # complete this function
     _id=int(pirate.getID())
-    curr_x=pirate.getPosition()[0]
-    curr_y=pirate.getPosition()[1]
-    if(_id%4==3):
-        moveAway()
-        
+    curr_x=int(pirate.getPosition()[0])
+    curr_y=int(pirate.getPosition()[1])
+
+
+
+
+    #random team 2 and 3
+    if(_id%4==3 or _id%4==2):
+        return moveAway(curr_x,curr_y,pirate)
     pass
 
 
