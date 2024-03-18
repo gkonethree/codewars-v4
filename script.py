@@ -57,6 +57,10 @@ def checkIsland(pirate):
     down = pirate.investigate_down()
     left = pirate.investigate_left()
     right = pirate.investigate_right()
+    nw = pirate.investigate_nw()
+    ne = pirate.investigate_ne()
+    sw = pirate.investigate_sw()
+    se = pirate.investigate_se()
     if (up[0:-1] == "island" or down[0:-1] == "island") and (left[0:-1] == "island" or right[0:-1] == "island"):
         return True
     else:
