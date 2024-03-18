@@ -86,6 +86,7 @@ def ActPirate(pirate):
     sw = pirate.investigate_sw()
     se = pirate.investigate_se()
     s = pirate.trackPlayers()
+    squad=_id%4
 
 #team signalling
     if (
@@ -93,64 +94,75 @@ def ActPirate(pirate):
         or (up == "island2" and s[1] != "myCaptured")
         or (up == "island3" and s[2] != "myCaptured")
     ):
-        sig = up[-1] + str(x) + "," + str(y - 1)
+        sig = up[-1] + str(x) + "," + str(y - 1)+","+str(squad)
         pirate.setTeamSignal(sig)
+        return moveTo(x,y-1,pirate)
 
     if (
         (down == "island1" and s[0] != "myCaptured")
         or (down == "island2" and s[1] != "myCaptured")
         or (down == "island3" and s[2] != "myCaptured")
     ):
-        sig = down[-1] + str(x) + "," + str(y + 1)
+        sig = down[-1] + str(x) + "," + str(y + 1)+","+str(squad)
         pirate.setTeamSignal(sig)
+        return moveTo(x,y+1,pirate)
 
     if (
         (left == "island1" and s[0] != "myCaptured")
         or (left == "island2" and s[1] != "myCaptured")
         or (left == "island3" and s[2] != "myCaptured")
     ):
-        sig = left[-1] + str(x - 1) + "," + str(y)
+        sig = left[-1] + str(x - 1) + "," + str(y)+","+str(squad)
         pirate.setTeamSignal(sig)
+        return moveTo(x-1,y,pirate)
 
     if (
         (right == "island1" and s[0] != "myCaptured")
         or (right == "island2" and s[1] != "myCaptured")
         or (right == "island3" and s[2] != "myCaptured")
     ):
-        sig = right[-1] + str(x + 1) + "," + str(y)
+        sig = right[-1] + str(x + 1) + "," + str(y)+","+str(squad)
         pirate.setTeamSignal(sig)
+        return moveTo(x+1,y,pirate)
 
     if (
         (nw == "island1" and s[0] != "myCaptured")
         or (nw == "island2" and s[1] != "myCaptured")
         or (nw == "island3" and s[2] != "myCaptured")
     ):
-        sig = nw[-1] + str(x -1) + "," + str(y-1)
+        sig = nw[-1] + str(x -1) + "," + str(y-1)+","+str(squad)
         pirate.setTeamSignal(sig)
+        return moveTo(x-1,y-1,pirate)
 
     if (
         (se == "island1" and s[0] != "myCaptured")
         or (se == "island2" and s[1] != "myCaptured")
         or (se == "island3" and s[2] != "myCaptured")
     ):
-        sig = se[-1] + str(x +1) + "," + str(y+1)
+        sig = se[-1] + str(x +1) + "," + str(y+1)+","+str(squad)
         pirate.setTeamSignal(sig)
+        return moveTo(x+1,y+1,pirate)
 
     if (
         (ne == "island1" and s[0] != "myCaptured")
         or (ne == "island2" and s[1] != "myCaptured")
         or (ne == "island3" and s[2] != "myCaptured")
     ):
-        sig = ne[-1] + str(x+1) + "," + str(y-1)
+        sig = ne[-1] + str(x+1) + "," + str(y-1)+","+str(squad)
         pirate.setTeamSignal(sig)
+        return moveTo(x+1,y-1,pirate)
 
     if (
         (sw == "island1" and s[0] != "myCaptured")
         or (sw == "island2" and s[1] != "myCaptured")
         or (sw == "island3" and s[2] != "myCaptured")
     ):
-        sig = sw[-1] + str(x -1) + "," + str(y+1)
+        sig = sw[-1] + str(x -1) + "," + str(y+1)+","+str(squad)
         pirate.setTeamSignal(sig)
+        return moveTo(x-1,y+1,pirate)
+    if(squad==3):
+        return moveAway(x,y,pirate)
+
 
 
     if pirate.getTeamSignal() != "":
@@ -158,17 +170,20 @@ def ActPirate(pirate):
         l = s.split(",")
         x = int(l[0][1:])
         y = int(l[1])
-        #PLEASE CONSIDER NECESSARY CHANGES ACCORDING TO SIZE I AM NOT ABLE TO KNOW THE CORRECT SIZE
-        if ((abs(pirate.getPosition()[0]-x)<=2) and (abs(pirate.getPosition()[1]-y)<=2)):
-            return moveTo(x, y, pirate)
-        else:
-            return random.randint(1,4)
-    else:
-        if (_id%4==(1 or 2)):
-            return random.randint(1,4) #for two 'random' teams
-        #CONSIDERING 40X40 WINDOW SIZE. PLEASE CHECK AND CORRECT IT
-        if (_id%4==(0 or 3)):
-            return circleAround(random.randint(18,22),random.randint(18,22),random.randint(2,10),pirate,"abc",clockwise=True)
+        
+        
+        
+    #     #PLEASE CONSIDER NECESSARY CHANGES ACCORDING TO SIZE I AM NOT ABLE TO KNOW THE CORRECT SIZE
+    #     if ((abs(pirate.getPosition()[0]-x)<=2) and (abs(pirate.getPosition()[1]-y)<=2)):
+    #         return moveTo(x, y, pirate)
+    #     else:
+    #         return random.randint(1,4)
+    # else:
+    #     if (_id%4==(1 or 2)):
+    #         return random.randint(1,4) #for two 'random' teams
+    #     #CONSIDERING 40X40 WINDOW SIZE. PLEASE CHECK AND CORRECT IT
+    #     if (_id%4==(0 or 3)):
+    #         return circleAround(random.randint(18,22),random.randint(18,22),random.randint(2,10),pirate,"abc",clockwise=True)
         # if (_id%4==3):
         #     return 
         # return moveAway(x,y,pirate)
@@ -194,6 +209,25 @@ def ActPirate(pirate):
 
     # pass
 
+        asquad=int(l[2])
+        if (asquad==0) and squad==asquad:
+            return moveTo(x, y, pirate)
+        elif(asquad==1) and squad==asquad:
+            return moveTo(x,y,pirate)
+        elif(asquad==2) and squad==asquad:
+            return moveTo(x,y,pirate)
+        elif(asquad==3) and squad==2:
+            return moveTo(x,y,pirate)
+#teams
+
+    if(squad==2):
+        return moveAway(x,y,pirate)
+    elif(squad==0):
+        return moveAway(x,y,pirate)
+        #horizontal squad
+    else:
+        return moveAway(x,y,pirate)
+        #vertical squad
 
 
 
@@ -204,8 +238,6 @@ def ActTeam(team):
     team.buildWalls(1)
     team.buildWalls(2)
     team.buildWalls(3)
-    # print(team.getTeamSignal())
-    # print(team.trackPlayers())
     
     if s:
         island_no = int(s[0])
