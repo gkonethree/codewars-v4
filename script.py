@@ -17,7 +17,7 @@ def moveTo(x, y, Pirate):
     else:
         return (position[1] < y) * 2 + 1
 
-
+#
 def moveAway(x, y, Pirate):
     position = Pirate.getPosition()
     if position[0] == x and position[1] == y:
@@ -51,7 +51,7 @@ def circleAround(x, y, radius, Pirate, initial="abc", clockwise=True):
             pos[(index + (clockwise * 2) - 1) % len(pos)][1],
             Pirate,
         )
-    
+    #4 teams : 2 random, 2 horizontal and vertical
 def checkIsland(pirate):
     up = pirate.investigate_up()
     down = pirate.investigate_down()
@@ -69,6 +69,12 @@ def checkIsland(pirate):
 
 def ActPirate(pirate):
     # complete this function
+    _id=int(pirate.getID())
+    curr_x=pirate.getPosition()[0]
+    curr_y=pirate.getPosition()[1]
+    if(_id%4==3):
+        moveAway()
+        
     pass
 
 
