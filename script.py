@@ -5,6 +5,7 @@ name = "script"
 
 
 def moveTo(x, y, Pirate):
+    # move to point(x,y)
     position = Pirate.getPosition()
     if position[0] == x and position[1] == y:
         return 0
@@ -19,6 +20,7 @@ def moveTo(x, y, Pirate):
 
 #
 def moveAway(x, y, Pirate):
+    # pirate move away from point(x,y) in random motion
     position = Pirate.getPosition()
     if position[0] == x and position[1] == y:
         return random.randint(1, 4)
@@ -28,6 +30,7 @@ def moveAway(x, y, Pirate):
         return (position[1] > y) * 2 + 1
 
 def circleAround(x, y, radius, Pirate, initial="abc", clockwise=True):
+    # pirate moves in square around point(x,y) with sidelength=2*radius 
     position = Pirate.getPosition()
     rx = position[0]
     ry = position[1]
