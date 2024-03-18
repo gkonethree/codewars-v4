@@ -5,7 +5,6 @@ name = "script"
 
 
 def moveTo(x, y, Pirate):
-    # move to point(x,y)
     position = Pirate.getPosition()
     if position[0] == x and position[1] == y:
         return 0
@@ -20,7 +19,6 @@ def moveTo(x, y, Pirate):
 
 #
 def moveAway(x, y, Pirate):
-    # pirate move away from point(x,y) in random motion
     position = Pirate.getPosition()
     if position[0] == x and position[1] == y:
         return random.randint(1, 4)
@@ -30,7 +28,6 @@ def moveAway(x, y, Pirate):
         return (position[1] > y) * 2 + 1
 
 def circleAround(x, y, radius, Pirate, initial="abc", clockwise=True):
-    # pirate moves in square around point(x,y) with sidelength=2*radius 
     position = Pirate.getPosition()
     rx = position[0]
     ry = position[1]
@@ -54,86 +51,142 @@ def circleAround(x, y, radius, Pirate, initial="abc", clockwise=True):
             pos[(index + (clockwise * 2) - 1) % len(pos)][1],
             Pirate,
         )
-
-def investigate_island(pirate):
-    # check if nearby in range of 1 tile tile is present
-    up = pirate.investigate_up()
-    down = pirate.investigate_down()
-    left = pirate.investigate_left()
-    right = pirate.investigate_right()
-    sw = pirate.investigate_sw()
-    se=pirate.investigate_se()
-    nw=pirate.investigate_nw()
-    ne=pirate.investigate_ne()
-    if ("island" in up[0:-1] or "island" in down[0:-1] or "island" in left[0:-1] or "island" in right[0:-1] or "island" in se[0:-1] or "island" in sw[0:-1] or "island" in nw[0:-1] or "island" in ne[0:-1]):
-        return True 
-    else:
-        return False
-
+    #4 teams : 2 random, 2 horizontal and vertical
 def checkIsland(pirate):
-    # check if pirate is present on 9 tiles of island
     up = pirate.investigate_up()
     down = pirate.investigate_down()
     left = pirate.investigate_left()
     right = pirate.investigate_right()
+    nw = pirate.investigate_nw()
+    ne = pirate.investigate_ne()
     sw = pirate.investigate_sw()
-    se=pirate.investigate_se()
-    nw=pirate.investigate_nw()
-    ne=pirate.investigate_ne()
-    if ("island" in up[0:1] or "island" in down[0:-1] ) and ("island" in left[0:-1] or "island" in right[0:-1]):
+    se = pirate.investigate_se()
+    if (up[0:-1] == "island" or down[0:-1] == "island") and (left[0:-1] == "island" or right[0:-1] == "island"):
         return True
     else:
         return False
 
-def move_horizontal_line(pirate,curr_x,curr_y,direction=1): #1 for right, 0 for left
-    if(direction==1):
-        if pirate.investigate_right[0]=="wall":
-            return 0
-        else:
-            moveTo(curr_x+1,curr_y)
-            return 1
-    if (direction==0):
-        if pirate.investigate_left[0]=="wall":
-            return 0
-        else:
-            moveTo(curr_x-1,curr_y)
-            return 1
-
-def move_vertical_line(pirate,curr_x,curr_y,direction=1): #1 for down, 0 for up
-    if(direction==1):
-        if pirate.investigate_down[0]=="wall":
-            return 0
-        else:
-            moveTo(curr_x,curr_y+1)
-            return 1
-    if (direction==0):
-        if pirate.investigate_up[0]=="wall":
-            return 0
-        else:
-            moveTo(curr_x,curr_y-1)
-            return 1        
-        
-
-
-
 
 def ActPirate(pirate):
-
-        
     # complete this function
     _id=int(pirate.getID())
-    curr_x=int(pirate.getPosition()[0])
-    curr_y=int(pirate.getPosition()[1])
+    x=int(pirate.getPosition()[0])
+    y=int(pirate.getPosition()[1])
+    up = pirate.investigate_up()[0]
+    down = pirate.investigate_down()[0]
+    left = pirate.investigate_left()[0]
+    right = pirate.investigate_right()[0]
+    nw = pirate.investigate_nw()
+    ne = pirate.investigate_ne()
+    sw = pirate.investigate_sw()
+    se = pirate.investigate_se()
+    s = pirate.trackPlayers()
+
+#team signalling
+    if (
+        (up == "island1" and s[0] != "myCaptured")
+        or (up == "island2" and s[1] != "myCaptured")
+        or (up == "island3" and s[2] != "myCaptured")
+    ):
+        sig = up[-1] + str(x) + "," + str(y - 1)
+        pirate.setTeamSignal(sig)
+
+    if (
+        (down == "island1" and s[0] != "myCaptured")
+        or (down == "island2" and s[1] != "myCaptured")
+        or (down == "island3" and s[2] != "myCaptured")
+    ):
+        sig = down[-1] + str(x) + "," + str(y + 1)
+        pirate.setTeamSignal(sig)
+
+    if (
+        (left == "island1" and s[0] != "myCaptured")
+        or (left == "island2" and s[1] != "myCaptured")
+        or (left == "island3" and s[2] != "myCaptured")
+    ):
+        sig = left[-1] + str(x - 1) + "," + str(y)
+        pirate.setTeamSignal(sig)
+
+    if (
+        (right == "island1" and s[0] != "myCaptured")
+        or (right == "island2" and s[1] != "myCaptured")
+        or (right == "island3" and s[2] != "myCaptured")
+    ):
+        sig = right[-1] + str(x + 1) + "," + str(y)
+        pirate.setTeamSignal(sig)
+
+    if (
+        (nw == "island1" and s[0] != "myCaptured")
+        or (nw == "island2" and s[1] != "myCaptured")
+        or (nw == "island3" and s[2] != "myCaptured")
+    ):
+        sig = nw[-1] + str(x -1) + "," + str(y-1)
+        pirate.setTeamSignal(sig)
+
+    if (
+        (se == "island1" and s[0] != "myCaptured")
+        or (se == "island2" and s[1] != "myCaptured")
+        or (se == "island3" and s[2] != "myCaptured")
+    ):
+        sig = se[-1] + str(x +1) + "," + str(y+1)
+        pirate.setTeamSignal(sig)
+
+    if (
+        (ne == "island1" and s[0] != "myCaptured")
+        or (ne == "island2" and s[1] != "myCaptured")
+        or (ne == "island3" and s[2] != "myCaptured")
+    ):
+        sig = ne[-1] + str(x+1) + "," + str(y-1)
+        pirate.setTeamSignal(sig)
+
+    if (
+        (sw == "island1" and s[0] != "myCaptured")
+        or (sw == "island2" and s[1] != "myCaptured")
+        or (sw == "island3" and s[2] != "myCaptured")
+    ):
+        sig = sw[-1] + str(x -1) + "," + str(y+1)
+        pirate.setTeamSignal(sig)
 
 
-
+    if pirate.getTeamSignal() != "":
+        s = pirate.getTeamSignal()
+        l = s.split(",")
+        x = int(l[0][1:])
+        y = int(l[1])
+    
+        return moveTo(x, y, pirate)
+    else:
+        return moveAway(x,y,pirate)
+#teams
 
     #random team 2 and 3
-    if(_id%4==3 or _id%4==2):
-        return moveAway(curr_x,curr_y,pirate)
-    pass
+    # if(_id%4==3 or _id%4==2):
+    #     return moveAway(x,y,pirate)
+    
+    #horizontalteam 1
+    # elif(_id%4==0):
+
+
+    # #vertical team 2
+    # else:
+
+    # pass
+
+
 
 
 def ActTeam(team):
-    # complete this function
-    pass
+    l = team.trackPlayers()
+    s = team.getTeamSignal()
+
+    team.buildWalls(1)
+    team.buildWalls(2)
+    team.buildWalls(3)
+    # print(team.getTeamSignal())
+    # print(team.trackPlayers())
+    
+    if s:
+        island_no = int(s[0])
+        signal = l[island_no - 1]
+        if signal == "myCaptured":
+            team.setTeamSignal("")

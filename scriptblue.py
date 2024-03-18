@@ -81,6 +81,7 @@ def ActTeam(team):
     team.buildWalls(3)
     # print(team.getTeamSignal())
     # print(team.trackPlayers())
+    print(team.getDimensionX())
     if s:
         island_no = int(s[0])
         signal = l[island_no - 1]

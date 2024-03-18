@@ -92,7 +92,7 @@ def ActPirate(pirate):
     x, y = pirate.getPosition()
     pirate.setSignal("")
     s = pirate.trackPlayers()
-    print(getDimensionX)
+    print(getDimensionX())
     
     if (
         (up == "island1" and s[0] != "myCaptured")
