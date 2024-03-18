@@ -51,19 +51,41 @@ def circleAround(x, y, radius, Pirate, initial="abc", clockwise=True):
             pos[(index + (clockwise * 2) - 1) % len(pos)][1],
             Pirate,
         )
-    
-def checkIsland(pirate):
+
+def investigate_island(pirate):
+    # check if nearby in range of 1 tile tile is present
     up = pirate.investigate_up()
     down = pirate.investigate_down()
     left = pirate.investigate_left()
     right = pirate.investigate_right()
-    if (up[0:-1] == "island" or down[0:-1] == "island") and (left[0:-1] == "island" or right[0:-1] == "island"):
+    sw = pirate.investigate_sw()
+    se=pirate.investigate_se()
+    nw=pirate.investigate_nw()
+    ne=pirate.investigate_ne()
+    if ("island" in up[0:-1] or "island" in down[0:-1] or "island" in left[0:-1] or "island" in right[0:-1] or "island" in se[0:-1] or "island" in sw[0:-1] or "island" in nw[0:-1] or "island" in ne[0:-1]):
+        return True 
+    else:
+        return False
+
+def checkIsland(pirate):
+    # check if pirate is present on 9 tiles of island
+    up = pirate.investigate_up()
+    down = pirate.investigate_down()
+    left = pirate.investigate_left()
+    right = pirate.investigate_right()
+    sw = pirate.investigate_sw()
+    se=pirate.investigate_se()
+    nw=pirate.investigate_nw()
+    ne=pirate.investigate_ne()
+    if ("island" in up[0:1] or "island" in down[0:-1] ) and ("island" in left[0:-1] or "island" in right[0:-1]):
         return True
     else:
         return False
 
 
 def ActPirate(pirate):
+
+        
     # complete this function
     pass
 
