@@ -65,7 +65,12 @@ def checkIsland(pirate):
         return True
     else:
         return False
-
+    
+    
+    # 1:up
+    # 2:right
+    # 3:down
+    # 4:left
 
 def ActPirate(pirate):
     # complete this function
