@@ -158,22 +158,39 @@ def ActPirate(pirate):
         l = s.split(",")
         x = int(l[0][1:])
         y = int(l[1])
-    
-        return moveTo(x, y, pirate)
+        #PLEASE CONSIDER NECESSARY CHANGES ACCORDING TO SIZE I AM NOT ABLE TO KNOW THE CORRECT SIZE
+        if ((abs(pirate.getPosition()[0]-x)<=2) and (abs(pirate.getPosition()[1]-y)<=2)):
+            return moveTo(x, y, pirate)
+        else:
+            return random.randint(1,4)
     else:
-        return moveAway(x,y,pirate)
-#teams
-
-    #random team 2 and 3
-    # if(_id%4==3 or _id%4==2):
-    #     return moveAway(x,y,pirate)
+        if (_id%4==(1 or 2)):
+            return random.randint(1,4) #for two 'random' teams
+        #CONSIDERING 40X40 WINDOW SIZE. PLEASE CHECK AND CORRECT IT
+        if (_id%4==(0 or 3)):
+            return circleAround(random.randint(18,22),random.randint(18,22),random.randint(2,10),pirate,"abc",clockwise=True)
+        # if (_id%4==3):
+        #     return 
+        # return moveAway(x,y,pirate)
+        
+        #I AM NOT GETTING HOW TO CODE FOR THE EVENT SO THAT SOME PIRATES REMAIN ON A ISLAND EVEN AFTER CONQUERING IT.
+        #ALSO CODE : SO THAT PIRATES KILL THE ENEMY WITHIN THE ISLAND, IF PRESENT.
     
-    #horizontalteam 1
-    # elif(_id%4==0):
+        
+# #teams
+
+#     # random team 2 and 3
+#     if(_id%4==3 or _id%4==2):
+#         return random.randint(1,4)
+    
+    
+    
+#     horizontalteam 1
+#     elif(_id%4==0):
 
 
-    # #vertical team 2
-    # else:
+#     #vertical team 2
+#     else:
 
     # pass
 
