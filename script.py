@@ -208,7 +208,19 @@ def ActPirate(pirate):
 #     else:
 
     # pass
-
+    
+    
+        if (up==("island1" or "island2" or "island3") and pirate.investigate_up()[1]==("enemy" or "both") and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
+            return 1
+        if (down==("island1" or "island2" or "island3") and pirate.investigate_down()[1]==("enemy" or "both") and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
+            return 3
+        if (left==("island1" or "island2" or "island3") and pirate.investigate_left()[1]==("enemy" or "both") and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
+            return 4
+        if (right==("island1" or "island2" or "island3") and pirate.investigate_right()[1]==("enemy" or "both") and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
+            return 2
+        
+        
+        
         asquad=int(l[2])
         if (asquad==0) and squad==asquad:
             return moveTo(x, y, pirate)
@@ -228,7 +240,12 @@ def ActPirate(pirate):
     else:
         return moveAway(x,y,pirate)
         #vertical squad
-
+    
+   
+    
+    
+    
+    
 
 
 def ActTeam(team):
@@ -244,3 +261,5 @@ def ActTeam(team):
         signal = l[island_no - 1]
         if signal == "myCaptured":
             team.setTeamSignal("")
+
+
