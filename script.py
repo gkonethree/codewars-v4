@@ -1,6 +1,7 @@
 import random
 import math
 
+
 name = "script"
 
 
@@ -87,6 +88,9 @@ def ActPirate(pirate):
     se = pirate.investigate_se()
     s = pirate.trackPlayers()
     squad=_id%4
+    
+    island_pos=[(-1,-1),(-1,-1),(-1,-1)]
+
 
 #team signalling
     if (
