@@ -16,10 +16,6 @@ def moveTo(x , y , Pirate):
         return (position[1] < y) * 2 + 1
     
 def checkfriends(pirate , quad ):
-    # returns no. of our pirates present in tiles of quadrant denoted by "quad"  (quad="ne" means 1st qudrant ie tiles "north ;east and ne" 
-                                                                                   #  ="nw" means 2nd qudrant ie tiles "north ;west and nw"
-                                                                                    # = "sw" means 3rd qudrant ie tiles "south ;west and sw"                
-                                                                                     # ="se" means 4th qudrant ie tiles "south ;east and se")
     sum = 0 
     up = pirate.investigate_up()[1]
     print(up)
@@ -63,7 +59,6 @@ def checkfriends(pirate , quad ):
     return sum
     
 def spread(pirate):
-    # move pirate in least populated quadrant among 8 adjacent tiles
     sw = checkfriends(pirate ,'sw' )
     se = checkfriends(pirate ,'se' )
     ne = checkfriends(pirate ,'ne' )
