@@ -433,3 +433,20 @@ def Direction(pirate):
         if dir == '4':
             arr = [1, 1, 1, 1, 2, 2, 2, 2, 4, 3]
             return random.choice(arr)
+        
+        
+        
+        
+        #FUNCTION FOR NEAREST PIRATES
+        def nearest_pirates(x,y,pirate):
+            x_=pirate.getPosition()[0]
+            y_=pirate.getPosition()[1]
+            if (abs(x-x_)<2 and abs(y-y_)<2):
+                stringsig=str(x_)+","+str(y_)
+                pirate.setSignal(stringsig)
+        
+        
+        # Task can be given to pirate by using the condition 
+        # if pirate.getSignal()=="<requiredstringin aboveformat>":
+        # moveTo(x,y,pirate)
+                 
