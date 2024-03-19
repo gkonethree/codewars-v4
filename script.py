@@ -93,10 +93,52 @@ def ActPirate(pirate):
     
     island_pos=[[-1,-1],[-1,-1],[-1,-1]]
     
-    # for i in range(3):
-    #     if island_pos[i][0]!=-1:
+    for i in range(3):
+        if island_pos[i][0]!=-1:
+            if pirate.trackPlayers()[i]!="myCaptured":
+                x=island_pos[i][0]
+                y=island_pos[i][1]
+                if squad==2:
+                    moveTo(x,y,pirate)
+    # if island is not captured by us squad[2] will go to the island   
+
+    # scouting captured island
+    # def scoutIsland(pirate, islandCenterX, islandCenterY, islandRadius):
+        # position = pirate.getPosition()
+        # x, y = position
+        # if :
+        # some condition for pirates which are alloted for scouting
+            # moveTo(islandCenterX,islandCenterY,pirate)
+            # while True:
+                # moveTo(islandCenterX,islandCenterY+1,pirate)
+                # moveTo(islandCenterX+1,islandCenterY+1,pirate)
+                # moveTo(islandCenterX+1,islandCenterY,pirate)
+                # moveTo(islandCenterX+1,islandCenterY-1,pirate)
+                # moveTo(islandCenterX,islandCenterY-1,pirate)
+                # moveTo(islandCenterX,islandCenterY,pirate)
+                # moveTo(islandCenterX,islandCenterY+1,pirate)
+                # moveTo(islandCenterX-1,islandCenterY+1,pirate)
+                # moveTo(islandCenterX-1,islandCenterY,pirate)
+                # moveTo(islandCenterX-1,islandCenterY-1,pirate)
+                # moveTo(islandCenterX,islandCenterY-1,pirate)
+                # moveTo(islandCenterX,islandCenterY,pirate)        
+
+
+
+
+
+    if (up==("island1" or "island2" or "island3") and pirate.investigate_up()[1]==("enemy" ) and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
+        return 1
+    if (down==("island1" or "island2" or "island3") and pirate.investigate_down()[1]==("enemy" ) and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
+        return 3
+    if (left==("island1" or "island2" or "island3") and pirate.investigate_left()[1]==("enemy" ) and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
+        return 4
+    if (right==("island1" or "island2" or "island3") and pirate.investigate_right()[1]==("enemy" ) and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
+        return 2
+
 
 #team signalling
+
     if (
         (up == "island1" and s[0] != "myCaptured")
         or (up == "island2" and s[1] != "myCaptured")
@@ -125,6 +167,7 @@ def ActPirate(pirate):
     ):
         sig = left[-1] + str(x - 1) + "," + str(y)+","+str(squad)
         pirate.setTeamSignal(sig)
+        
         pirate.setSignal(curr_sig+'s')
         return moveTo(x-1,y,pirate)
 
@@ -135,7 +178,8 @@ def ActPirate(pirate):
     ):
         sig = right[-1] + str(x + 1) + "," + str(y)+","+str(squad)
         pirate.setTeamSignal(sig)
-        pirate.setSignal(curr_sig+'s')
+        curr_sig=pirate.getPirateSignal()
+        pirate.setPirateSignal(curr_sig+'s')
         return moveTo(x+1,y,pirate)
 
     if (
@@ -223,14 +267,14 @@ def ActPirate(pirate):
             return moveTo(x,y,pirate)
 #teams
 
-    if(squad==2):
-        return moveAway(x,y,pirate)
-    elif(squad==0):
-        return moveAway(x,y,pirate)
-        #horizontal squad
-    else:
-        return moveAway(x,y,pirate)
-        #vertical squad
+    if pirate.getSignal() == '':
+        pirate.setSignal('988080')
+    if (squad == 2):
+        return moveAway(x, y, pirate)
+    # _id % 4 == 1 vertical                          1   2
+    # _id % 4 == 0 horizontal                        4   3
+    if _id % 4 == 0 or _id % 4 == 1:
+        return Direction(pirate)
 
 
 def ActTeam(team):
@@ -246,3 +290,88 @@ def ActTeam(team):
         signal = l[island_no - 1]
         if signal == "myCaptured":
             team.setTeamSignal("")
+
+
+def Direction(pirate):
+    up = pirate.investigate_up()
+    down = pirate.investigate_down()
+    left = pirate.investigate_left()
+    right = pirate.investigate_right()
+    if up[0] == 'wall' and left[0] == 'wall':
+        signal = pirate.getSignal()
+        signal = '1' + signal[1:]
+        pirate.setSignal(signal)  # 1   2
+    elif up[0] == 'wall' and right[0] == 'wall':  # 4   3
+        signal = pirate.getSignal()
+        signal = '2' + signal[1:]
+        pirate.setSignal(signal)
+    elif down[0] == 'wall' and right[0] == 'wall':
+        signal = pirate.getSignal()
+        signal = '3' + signal[1:]
+        pirate.setSignal(signal)
+    elif down[0] == 'wall' and left[0] == 'wall':
+        signal = pirate.getSignal()
+        signal = '4' + signal[1:]
+        pirate.setSignal(signal)
+    elif up[0] == 'wall':
+        signal = pirate.getSignal()
+        if pirate.getSignal() == '4':
+            signal = '2' + signal[1:]
+        else:
+            signal = '1' + signal[1:]
+        pirate.setSignal(signal)
+    elif down[0] == 'wall':
+        signal = pirate.getSignal()
+        if pirate.getSignal() == '1':
+            signal = '4' + signal[1:]
+        else:
+            signal = '3' + signal[1:]
+        pirate.setSignal(signal)
+    elif left[0] == 'wall':
+        signal = pirate.getSignal()
+        if pirate.getSignal() == '2':
+            signal = '4' + signal[1:]
+        else:
+            signal = '1' + signal[1:]
+        pirate.setSignal(signal)
+    elif right[0] == 'wall':
+        signal = pirate.getSignal()
+        if pirate.getSignal() == '1':
+            signal = '3' + signal[1:]
+        else:
+            signal = '2' + signal[1:]
+        pirate.setSignal(signal)
+    dir = pirate.getSignal()[0]
+    if int(pirate.getID()) % 4 == 0:
+        if dir == '1':
+            arr = [3, 3, 3, 2, 2, 2, 2, 2, 2, 2]
+            return arr[random.randint(0, 9)]
+        if dir == '2':
+            arr = [3, 3, 3, 4, 4, 4, 4, 4, 4, 4]
+            return arr[random.randint(0, 9)]
+        if dir == '3':
+            arr = [1, 1, 1, 4, 4, 4, 4, 4, 4, 4]
+            return arr[random.randint(0, 9)]
+        if dir == '4':
+            arr = [1, 1, 1, 2, 2, 2, 2, 2, 2, 2]
+            return arr[random.randint(0, 9)]
+    if int(pirate.getID()) % 4 == 1:
+        if dir == '1':
+            arr = [3, 3, 3, 3, 3, 3, 3, 2, 2, 2]
+            return arr[random.randint(0, 9)]
+        if dir == '2':
+            arr = [3, 3, 3, 3, 3, 3, 3, 4, 4, 4]
+            return arr[random.randint(0, 9)]
+        if dir == '3':
+            arr = [1, 1, 1, 1, 1, 1, 1, 4, 4, 4]
+            return arr[random.randint(0, 9)]
+        if dir == '4':
+            arr = [1, 1, 1, 1, 1, 1, 1, 2, 2, 2]
+            return arr[random.randint(0, 9)]
+        
+        
+        
+        
+        
+        
+        
