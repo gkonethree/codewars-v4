@@ -178,8 +178,8 @@ def ActPirate(pirate):
     ):
         sig = right[-1] + str(x + 1) + "," + str(y)+","+str(squad)
         pirate.setTeamSignal(sig)
-        curr_sig=pirate.getPirateSignal()
-        pirate.setPirateSignal(curr_sig+'s')
+        curr_sig=pirate.getSignal()
+        pirate.setSignal(curr_sig+'s')
         return moveTo(x+1,y,pirate)
 
     if (
