@@ -6,5 +6,5 @@ from sample_scripts import sample1,sample2,sample3
 import vishwajeeth
 
 if __name__ == "__main__":
-    G = Game((40, 40), script, vishwajeeth)
+    G = Game((40, 40), script,sample1)
     G.run_game()
