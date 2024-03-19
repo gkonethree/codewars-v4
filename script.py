@@ -130,6 +130,7 @@ def ActPirate(pirate):
         return 2
 
     s = pirate.getTeamSignal()
+    print(s)
     l = s.split(",")
     xi=l[10]
     yi=l[11]
@@ -143,15 +144,15 @@ def ActPirate(pirate):
     elif(asquad==3) and squad==2:
         return moveTo(xi,yi,pirate)
 #team signalling
-    if(l[0]==1 and tp[0]!="myCaptured"):
-        if squad==3:
-            moveTo(int(l[1]),int(l[2]))
-    if(l[3]==1 and tp[1]!="myCaptured"):
-        if squad==3:
-            moveTo(int(l[4]),int(l[5]))
-    if(l[6]==1 and tp[2]!="myCaptured"):
-        if squad==3:
-            moveTo(int(l[7]),int(l[8]))
+    if(l[0]=='1' and tp[0]!="myCaptured"):
+        if _id%7==0:
+            moveTo(int(l[1]),int(l[2]),pirate)
+    if(l[3]=='2' and tp[1]!="myCaptured"):
+        if _id%7==0:
+            moveTo(int(l[4]),int(l[5]),pirate)
+    if(l[6]=='3' and tp[2]!="myCaptured"):
+        if _id%7==0:
+            moveTo(int(l[7]),int(l[8]),pirate)
         
     if (
         (up == "island1" and tp[0] != "myCaptured" and l[0]!=up[-1]) 
@@ -163,11 +164,11 @@ def ActPirate(pirate):
             l[1]=str(x)
             l[2]=str(y)
         if up[-1]=='2':
-            l[3]=1
+            l[3]=2
             l[4]=str(x)
             l[5]=str(y)
         if up[-1]=='3':
-            l[6]=1
+            l[6]=3
             l[7]=str(x)
             l[8]=str(y)
         l[9]=str(squad)
@@ -186,11 +187,11 @@ def ActPirate(pirate):
             l[1]=str(x)
             l[2]=str(y)
         if down[-1]=='2':
-            l[3]=1
+            l[3]=2
             l[4]=str(x)
             l[5]=str(y)
         if down[-1]=='3':
-            l[6]=1
+            l[6]=3
             l[7]=str(x)
             l[8]=str(y)
         l[9]=str(squad)
@@ -210,11 +211,11 @@ def ActPirate(pirate):
             l[1]=str(x)
             l[2]=str(y)
         if left[-1]=='2':
-            l[3]=1
+            l[3]=2
             l[4]=str(x)
             l[5]=str(y)
         if left[-1]=='3':
-            l[6]=1
+            l[6]=3
             l[7]=str(x)
             l[8]=str(y)
         l[9]=str(squad)
@@ -234,11 +235,11 @@ def ActPirate(pirate):
             l[1]=str(x)
             l[2]=str(y)
         if right[-1]=='2':
-            l[3]=1
+            l[3]=2
             l[4]=str(x)
             l[5]=str(y)
         if right[-1]=='3':
-            l[6]=1
+            l[6]=3
             l[7]=str(x)
             l[8]=str(y)
         l[9]=str(squad)
@@ -258,11 +259,11 @@ def ActPirate(pirate):
             l[1]=str(x)
             l[2]=str(y)
         if nw[-1]=='2':
-            l[3]=1
+            l[3]=2
             l[4]=str(x)
             l[5]=str(y)
         if nw[-1]=='3':
-            l[6]=1
+            l[6]=3
             l[7]=str(x)
             l[8]=str(y)
         l[9]=str(squad)
@@ -282,11 +283,11 @@ def ActPirate(pirate):
             l[1]=str(x)
             l[2]=str(y)
         if se[-1]=='2':
-            l[3]=1
+            l[3]=2
             l[4]=str(x)
             l[5]=str(y)
         if se[-1]=='3':
-            l[6]=1
+            l[6]=3
             l[7]=str(x)
             l[8]=str(y)
         l[9]=str(squad)
@@ -306,11 +307,11 @@ def ActPirate(pirate):
             l[1]=str(x)
             l[2]=str(y)
         if ne[-1]=='2':
-            l[3]=1
+            l[3]=2
             l[4]=str(x)
             l[5]=str(y)
         if ne[-1]=='3':
-            l[6]=1
+            l[6]=3
             l[7]=str(x)
             l[8]=str(y)
         l[9]=str(squad)
@@ -330,11 +331,11 @@ def ActPirate(pirate):
             l[1]=str(x)
             l[2]=str(y)
         if sw[-1]=='2':
-            l[3]=1
+            l[3]=2
             l[4]=str(x)
             l[5]=str(y)
         if sw[-1]=='3':
-            l[6]=1
+            l[6]=3
             l[7]=str(x)
             l[8]=str(y)
         l[9]=str(squad)
@@ -496,7 +497,7 @@ def nearest_pirates(x,y,team,pirate):
     x_=pirate.getPosition()[0]
     y_=pirate.getPosition()[1]
     number=team.getTotalPirates()
-    for pirateno in range(1,number+1):   
+    for pirate in range(1,number+1):   
         x_=pirate.getPosition()[0]
         y_=pirate.getPosition()[1]
         if (abs(x-x_)>2 or abs(y-y_)>2):
