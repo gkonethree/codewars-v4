@@ -18,7 +18,6 @@ def moveTo(x, y, Pirate):
     else:
         return (position[1] < y) * 2 + 1
 
-#
 def moveAway(x, y, Pirate):
     position = Pirate.getPosition()
     if position[0] == x and position[1] == y:
@@ -62,6 +61,8 @@ def checkIsland(pirate):
     ne = pirate.investigate_ne()
     sw = pirate.investigate_sw()
     se = pirate.investigate_se()
+    
+
     if (up[0:-1] == "island" or down[0:-1] == "island") and (left[0:-1] == "island" or right[0:-1] == "island"):
         return True
     else:
@@ -87,6 +88,8 @@ def ActPirate(pirate):
     se = pirate.investigate_se()
     s = pirate.trackPlayers()
     squad=_id%4
+    pirate.setSignal(';')
+    curr_sig=pirate.getSignal()
     
     island_pos=[[-1,-1],[-1,-1],[-1,-1]]
     
@@ -101,8 +104,8 @@ def ActPirate(pirate):
     ):
         sig = up[-1] + str(x) + "," + str(y - 1)+","+str(squad)
         pirate.setTeamSignal(sig)
-        curr_sig=pirate.getPirateSignal()
-        pirate.setPirateSignal(curr_sig+'s')
+        if len(curr_sig)==1:
+            pirate.setSignal(curr_sig+'s')
         return moveTo(x,y-1,pirate)
 
     if (
@@ -112,8 +115,7 @@ def ActPirate(pirate):
     ):
         sig = down[-1] + str(x) + "," + str(y + 1)+","+str(squad)
         pirate.setTeamSignal(sig)
-        curr_sig=pirate.getPirateSignal()
-        pirate.setPirateSignal(curr_sig+'s')
+        pirate.setSignal(curr_sig+'s')
         return moveTo(x,y+1,pirate)
 
     if (
@@ -123,8 +125,7 @@ def ActPirate(pirate):
     ):
         sig = left[-1] + str(x - 1) + "," + str(y)+","+str(squad)
         pirate.setTeamSignal(sig)
-        curr_sig=pirate.getPirateSignal()
-        pirate.setPirateSignal(curr_sig+'s')
+        pirate.setSignal(curr_sig+'s')
         return moveTo(x-1,y,pirate)
 
     if (
@@ -134,8 +135,7 @@ def ActPirate(pirate):
     ):
         sig = right[-1] + str(x + 1) + "," + str(y)+","+str(squad)
         pirate.setTeamSignal(sig)
-        curr_sig=pirate.getPirateSignal()
-        pirate.setPirateSignal(curr_sig+'s')
+        pirate.setSignal(curr_sig+'s')
         return moveTo(x+1,y,pirate)
 
     if (
@@ -145,8 +145,7 @@ def ActPirate(pirate):
     ):
         sig = nw[-1] + str(x -1) + "," + str(y-1)+","+str(squad)
         pirate.setTeamSignal(sig)
-        curr_sig=pirate.getPirateSignal()
-        pirate.setPirateSignal(curr_sig+'s')
+        pirate.setSignal(curr_sig+'s')
         return moveTo(x-1,y-1,pirate)
 
     if (
@@ -156,8 +155,7 @@ def ActPirate(pirate):
     ):
         sig = se[-1] + str(x +1) + "," + str(y+1)+","+str(squad)
         pirate.setTeamSignal(sig)
-        curr_sig=pirate.getPirateSignal()
-        pirate.setPirateSignal(curr_sig+'s')
+        pirate.setSignal(curr_sig+'s')
         return moveTo(x+1,y+1,pirate)
 
     if (
@@ -167,8 +165,7 @@ def ActPirate(pirate):
     ):
         sig = ne[-1] + str(x+1) + "," + str(y-1)+","+str(squad)
         pirate.setTeamSignal(sig)
-        curr_sig=pirate.getPirateSignal()
-        pirate.setPirateSignal(curr_sig+'s')
+        pirate.setSignal(curr_sig+'s')
         return moveTo(x+1,y-1,pirate)
 
     if (
@@ -178,9 +175,12 @@ def ActPirate(pirate):
     ):
         sig = sw[-1] + str(x -1) + "," + str(y+1)+","+str(squad)
         pirate.setTeamSignal(sig)
-        curr_sig=pirate.getPirateSignal()
-        pirate.setPirateSignal(curr_sig+'s')
+        pirate.setSignal(curr_sig+'s')
         return moveTo(x-1,y+1,pirate)
+    
+    if len(str(pirate.getSignal))==2 and pirate.getSignal()[1]=='s':
+        return
+    
     if (up==("island1" or "island2" or "island3") and pirate.investigate_up()[1]==("enemy" or "both") and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
         return 1
     if (down==("island1" or "island2" or "island3") and pirate.investigate_down()[1]==("enemy" or "both") and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
@@ -192,7 +192,7 @@ def ActPirate(pirate):
     if(squad==3):
         return moveAway(x,y,pirate)
 
-
+   
 
     if pirate.getTeamSignal() != "":
         s = pirate.getTeamSignal()
@@ -231,25 +231,6 @@ def ActPirate(pirate):
     else:
         return moveAway(x,y,pirate)
         #vertical squad
-
-
-        
-    #     #PLEASE CONSIDER NECESSARY CHANGES ACCORDING TO SIZE I AM NOT ABLE TO KNOW THE CORRECT SIZE
-    #     if ((abs(pirate.getPosition()[0]-x)<=2) and (abs(pirate.getPosition()[1]-y)<=2)):
-    #         return moveTo(x, y, pirate)
-    #     else:
-    #         return random.randint(1,4)
-    # else:
-    #     if (_id%4==(1 or 2)):
-    #         return random.randint(1,4) #for two 'random' teams
-    #     #CONSIDERING 40X40 WINDOW SIZE. PLEASE CHECK AND CORRECT IT
-    #     if (_id%4==(0 or 3)):
-    #         return circleAround(random.randint(18,22),random.randint(18,22),random.randint(2,10),pirate,"abc",clockwise=True)
-        # if (_id%4==3):
-        #     return 
-        # return moveAway(x,y,pirate)
-    
-    
 
 
 def ActTeam(team):
