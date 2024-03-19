@@ -52,7 +52,7 @@ def circleAround(x, y, radius, Pirate, initial="abc", clockwise=True):
             pos[(index + (clockwise * 2) - 1) % len(pos)][1],
             Pirate,
         )
-    #4 teams : 2 random, 2 horizontal and vertical
+
 def checkIsland(pirate):
     up = pirate.investigate_up()
     down = pirate.investigate_down()
@@ -74,7 +74,6 @@ def checkIsland(pirate):
     # 4:left
 
 def ActPirate(pirate):
-    # complete this function
     _id=int(pirate.getID())
     x=int(pirate.getPosition()[0])
     y=int(pirate.getPosition()[1])
@@ -89,8 +88,10 @@ def ActPirate(pirate):
     s = pirate.trackPlayers()
     squad=_id%4
     
-    island_pos=[(-1,-1),(-1,-1),(-1,-1)]
-
+    island_pos=[[-1,-1],[-1,-1],[-1,-1]]
+    
+    # for i in range(3):
+    #     if island_pos[i][0]!=-1:
 
 #team signalling
     if (
@@ -100,6 +101,8 @@ def ActPirate(pirate):
     ):
         sig = up[-1] + str(x) + "," + str(y - 1)+","+str(squad)
         pirate.setTeamSignal(sig)
+        curr_sig=pirate.getPirateSignal()
+        pirate.setPirateSignal(curr_sig+'s')
         return moveTo(x,y-1,pirate)
 
     if (
@@ -109,6 +112,8 @@ def ActPirate(pirate):
     ):
         sig = down[-1] + str(x) + "," + str(y + 1)+","+str(squad)
         pirate.setTeamSignal(sig)
+        curr_sig=pirate.getPirateSignal()
+        pirate.setPirateSignal(curr_sig+'s')
         return moveTo(x,y+1,pirate)
 
     if (
@@ -118,6 +123,8 @@ def ActPirate(pirate):
     ):
         sig = left[-1] + str(x - 1) + "," + str(y)+","+str(squad)
         pirate.setTeamSignal(sig)
+        curr_sig=pirate.getPirateSignal()
+        pirate.setPirateSignal(curr_sig+'s')
         return moveTo(x-1,y,pirate)
 
     if (
@@ -127,6 +134,8 @@ def ActPirate(pirate):
     ):
         sig = right[-1] + str(x + 1) + "," + str(y)+","+str(squad)
         pirate.setTeamSignal(sig)
+        curr_sig=pirate.getPirateSignal()
+        pirate.setPirateSignal(curr_sig+'s')
         return moveTo(x+1,y,pirate)
 
     if (
@@ -136,6 +145,8 @@ def ActPirate(pirate):
     ):
         sig = nw[-1] + str(x -1) + "," + str(y-1)+","+str(squad)
         pirate.setTeamSignal(sig)
+        curr_sig=pirate.getPirateSignal()
+        pirate.setPirateSignal(curr_sig+'s')
         return moveTo(x-1,y-1,pirate)
 
     if (
@@ -145,6 +156,8 @@ def ActPirate(pirate):
     ):
         sig = se[-1] + str(x +1) + "," + str(y+1)+","+str(squad)
         pirate.setTeamSignal(sig)
+        curr_sig=pirate.getPirateSignal()
+        pirate.setPirateSignal(curr_sig+'s')
         return moveTo(x+1,y+1,pirate)
 
     if (
@@ -154,6 +167,8 @@ def ActPirate(pirate):
     ):
         sig = ne[-1] + str(x+1) + "," + str(y-1)+","+str(squad)
         pirate.setTeamSignal(sig)
+        curr_sig=pirate.getPirateSignal()
+        pirate.setPirateSignal(curr_sig+'s')
         return moveTo(x+1,y-1,pirate)
 
     if (
@@ -163,7 +178,17 @@ def ActPirate(pirate):
     ):
         sig = sw[-1] + str(x -1) + "," + str(y+1)+","+str(squad)
         pirate.setTeamSignal(sig)
+        curr_sig=pirate.getPirateSignal()
+        pirate.setPirateSignal(curr_sig+'s')
         return moveTo(x-1,y+1,pirate)
+    if (up==("island1" or "island2" or "island3") and pirate.investigate_up()[1]==("enemy" or "both") and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
+        return 1
+    if (down==("island1" or "island2" or "island3") and pirate.investigate_down()[1]==("enemy" or "both") and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
+        return 3
+    if (left==("island1" or "island2" or "island3") and pirate.investigate_left()[1]==("enemy" or "both") and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
+        return 4
+    if (right==("island1" or "island2" or "island3") and pirate.investigate_right()[1]==("enemy" or "both") and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
+        return 2
     if(squad==3):
         return moveAway(x,y,pirate)
 
@@ -172,48 +197,12 @@ def ActPirate(pirate):
     if pirate.getTeamSignal() != "":
         s = pirate.getTeamSignal()
         l = s.split(",")
-        x = int(l[0][1:])
-        y = int(l[1])
-        
-        
-        
-    #     #PLEASE CONSIDER NECESSARY CHANGES ACCORDING TO SIZE I AM NOT ABLE TO KNOW THE CORRECT SIZE
-    #     if ((abs(pirate.getPosition()[0]-x)<=2) and (abs(pirate.getPosition()[1]-y)<=2)):
-    #         return moveTo(x, y, pirate)
-    #     else:
-    #         return random.randint(1,4)
-    # else:
-    #     if (_id%4==(1 or 2)):
-    #         return random.randint(1,4) #for two 'random' teams
-    #     #CONSIDERING 40X40 WINDOW SIZE. PLEASE CHECK AND CORRECT IT
-    #     if (_id%4==(0 or 3)):
-    #         return circleAround(random.randint(18,22),random.randint(18,22),random.randint(2,10),pirate,"abc",clockwise=True)
-        # if (_id%4==3):
-        #     return 
-        # return moveAway(x,y,pirate)
-        
-        #I AM NOT GETTING HOW TO CODE FOR THE EVENT SO THAT SOME PIRATES REMAIN ON A ISLAND EVEN AFTER CONQUERING IT.
-        #ALSO CODE : SO THAT PIRATES KILL THE ENEMY WITHIN THE ISLAND, IF PRESENT.
-    
-        
-# #teams
-
-#     # random team 2 and 3
-#     if(_id%4==3 or _id%4==2):
-#         return random.randint(1,4)
-    
-    
-    
-#     horizontalteam 1
-#     elif(_id%4==0):
-
-
-#     #vertical team 2
-#     else:
-
-    # pass
-    
-    
+        i=int(l[0])
+        xi = int(l[0][1:])
+        yi = int(l[1])
+        # if island_pos[i][0] == -1:
+        #     island_pos[i][0]=xi
+        #     island_pos[i][1]=yi
         if (up==("island1" or "island2" or "island3") and pirate.investigate_up()[1]==("enemy" or "both") and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
             return 1
         if (down==("island1" or "island2" or "island3") and pirate.investigate_down()[1]==("enemy" or "both") and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
@@ -222,9 +211,7 @@ def ActPirate(pirate):
             return 4
         if (right==("island1" or "island2" or "island3") and pirate.investigate_right()[1]==("enemy" or "both") and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
             return 2
-        
-        
-        
+
         asquad=int(l[2])
         if (asquad==0) and squad==asquad:
             return moveTo(x, y, pirate)
@@ -244,10 +231,23 @@ def ActPirate(pirate):
     else:
         return moveAway(x,y,pirate)
         #vertical squad
-    
-   
-    
-    
+
+
+        
+    #     #PLEASE CONSIDER NECESSARY CHANGES ACCORDING TO SIZE I AM NOT ABLE TO KNOW THE CORRECT SIZE
+    #     if ((abs(pirate.getPosition()[0]-x)<=2) and (abs(pirate.getPosition()[1]-y)<=2)):
+    #         return moveTo(x, y, pirate)
+    #     else:
+    #         return random.randint(1,4)
+    # else:
+    #     if (_id%4==(1 or 2)):
+    #         return random.randint(1,4) #for two 'random' teams
+    #     #CONSIDERING 40X40 WINDOW SIZE. PLEASE CHECK AND CORRECT IT
+    #     if (_id%4==(0 or 3)):
+    #         return circleAround(random.randint(18,22),random.randint(18,22),random.randint(2,10),pirate,"abc",clockwise=True)
+        # if (_id%4==3):
+        #     return 
+        # return moveAway(x,y,pirate)
     
     
 
@@ -265,5 +265,3 @@ def ActTeam(team):
         signal = l[island_no - 1]
         if signal == "myCaptured":
             team.setTeamSignal("")
-
-
