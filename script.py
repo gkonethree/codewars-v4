@@ -99,6 +99,26 @@ def ActPirate(pirate):
                     moveTo(x,y,pirate)
     # if island is not captured by us squad[2] will go to the island   
 
+    # scouting captured island
+    # def scoutIsland(pirate, islandCenterX, islandCenterY, islandRadius):
+        # position = pirate.getPosition()
+        # x, y = position
+        # if :
+        # some condition for pirates which are alloted for scouting
+            # moveTo(islandCenterX,islandCenterY,pirate)
+            # while True:
+                # moveTo(islandCenterX,islandCenterY+1,pirate)
+                # moveTo(islandCenterX+1,islandCenterY+1,pirate)
+                # moveTo(islandCenterX+1,islandCenterY,pirate)
+                # moveTo(islandCenterX+1,islandCenterY-1,pirate)
+                # moveTo(islandCenterX,islandCenterY-1,pirate)
+                # moveTo(islandCenterX,islandCenterY,pirate)
+                # moveTo(islandCenterX,islandCenterY+1,pirate)
+                # moveTo(islandCenterX-1,islandCenterY+1,pirate)
+                # moveTo(islandCenterX-1,islandCenterY,pirate)
+                # moveTo(islandCenterX-1,islandCenterY-1,pirate)
+                # moveTo(islandCenterX,islandCenterY-1,pirate)
+                # moveTo(islandCenterX,islandCenterY,pirate)        
 
 
 
