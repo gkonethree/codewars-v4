@@ -87,42 +87,28 @@ def ActPirate(pirate):
     se = pirate.investigate_se()
     s = pirate.trackPlayers()
     squad=_id%4
-    
-    island_pos=[[-1,-1],[-1,-1],[-1,-1]]
-    
-    for i in range(3):
-        if island_pos[i][0]!=-1:
-            if pirate.trackPlayers()[i]!="myCaptured":
-                x=island_pos[i][0]
-                y=island_pos[i][1]
-                if squad==2:
-                    moveTo(x,y,pirate)
+        
     # if island is not captured by us squad[2] will go to the island   
 
     # scouting captured island
-    # def scoutIsland(pirate, islandCenterX, islandCenterY, islandRadius):
-        # position = pirate.getPosition()
-        # x, y = position
-        # if :
-        # some condition for pirates which are alloted for scouting
-            # moveTo(islandCenterX,islandCenterY,pirate)
-            # while True:
-                # moveTo(islandCenterX,islandCenterY+1,pirate)
-                # moveTo(islandCenterX+1,islandCenterY+1,pirate)
-                # moveTo(islandCenterX+1,islandCenterY,pirate)
-                # moveTo(islandCenterX+1,islandCenterY-1,pirate)
-                # moveTo(islandCenterX,islandCenterY-1,pirate)
-                # moveTo(islandCenterX,islandCenterY,pirate)
-                # moveTo(islandCenterX,islandCenterY+1,pirate)
-                # moveTo(islandCenterX-1,islandCenterY+1,pirate)
-                # moveTo(islandCenterX-1,islandCenterY,pirate)
-                # moveTo(islandCenterX-1,islandCenterY-1,pirate)
-                # moveTo(islandCenterX,islandCenterY-1,pirate)
-                # moveTo(islandCenterX,islandCenterY,pirate)        
+    position = pirate.getPosition()
+    
+# some condition for pirates which are alloted for scouting
+    if checkIsland(pirate):
+        if position != IslandCenter(pirate,position):
+            return moveTo(position[0],position[1],pirate)
+        # if pirate.investigate_up()[1] == 'blank':
+        #     pirate.setTeamSignal(pirate.getTeamSignal+',d1')
+        # if pirate.investigate_down()[1] == 'blank':
+        #     pirate.setTeamSignal(pirate.getTeamSignal+',d3')
+        # if pirate.investigate_right()[1] == 'blank':
+        #     pirate.setTeamSignal(pirate.getTeamSignal+',d2')
+        # if pirate.investigate_left()[1] == 'blank':
+        #     pirate.setTeamSignal(pirate.getTeamSignal+',d4')
+        # if 'd1' in pirate.getTeamSignal:
 
-
-
-
+        
+    
 
     if (up==("island1" or "island2" or "island3") and pirate.investigate_up()[1]==("enemy" ) and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
         return 1
@@ -146,7 +132,6 @@ def ActPirate(pirate):
         curr_sig=pirate.getSignal()
         pirate.setSignal(curr_sig+'s')
         return moveTo(x,y-1,pirate)
-
     if (
         (down == "island1" and s[0] != "myCaptured")
         or (down == "island2" and s[1] != "myCaptured")
@@ -400,3 +385,30 @@ def Direction(pirate):
         if dir == '4':
             arr = [1, 1, 1, 1, 2, 2, 2, 2, 4, 3]
             return random.choice(arr)
+
+def IslandCenter(pirate,position):
+    x = int(position[0])
+    y = int(position[1])
+    if (pirate.investigate_up()[0] == 'island' and pirate.investigate_down()[0] == 'island' and 
+        pirate.investigate_left()[0] == 'island' and pirate.investigate_right()[0] == 'island'):
+        return position
+    if (pirate.investigate_up()[0] == 'island' and pirate.investigate_right()[0] == 'island' and
+        pirate.investigate_down()[0] == 'island'):
+        return (x+1,y)
+    if (pirate.investigate_up()[0] == 'island' and pirate.investigate_left()[0] == 'island' and
+        pirate.investigate_down()[0] == 'island'):
+        return (x-1,y)
+    if (pirate.investigate_right()[0] == 'island' and pirate.investigate_left()[0] == 'island' and
+        pirate.investigate_down()[0] == 'island'):
+        return (x,y-1)
+    if (pirate.investigate_right()[0] == 'island' and pirate.investigate_left()[0] == 'island' and
+        pirate.investigate_up()[0] == 'island'):
+        return (x,y+1)
+    if (pirate.investigate_right()[0] == 'island' and pirate.investigate_up()[0] == 'island'):
+        return (x+1,y-1)
+    if (pirate.investigate_right()[0] == 'island' and pirate.investigate_down()[0] == 'island'):
+        return (x+1,y+1)
+    if (pirate.investigate_left()[0] == 'island' and pirate.investigate_down()[0] == 'island'):
+        return (x-1,y+1)
+    if (pirate.investigate_left()[0] == 'island' and pirate.investigate_up()[0] == 'island'):
+        return (x-1,y-1)
