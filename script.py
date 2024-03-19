@@ -94,15 +94,39 @@ def ActPirate(pirate):
     if pirate.getTeamSignal()== '':
         team_sig="0,"+"x,"+"y,"+"0,"+"x,"+"y,"+"0,"+"x,"+"y,"+"9,"+"x,"+"y"
         pirate.setTeamSignal(team_sig)
-    print(pirate.getTeamSignal)
+# some condition for pirates which are alloted for scouting
+    if checkIsland(pirate):
+        print(1)
+        if position != IslandCenter(pirate,position):
+            print(position, IslandCenter(pirate,position))
+            return moveTo(IslandCenter(pirate,position)[0],IslandCenter(pirate,position)[1],pirate)
+        # if pirate.investigate_up()[1] == 'blank':
+        #     pirate.setTeamSignal(pirate.getTeamSignal+',d1')
+        # if pirate.investigate_down()[1] == 'blank':
+        #     pirate.setTeamSignal(pirate.getTeamSignal+',d3')
+        # if pirate.investigate_right()[1] == 'blank':
+        #     pirate.setTeamSignal(pirate.getTeamSignal+',d2')
+        # if pirate.investigate_left()[1] == 'blank':
+        #     pirate.setTeamSignal(pirate.getTeamSignal+',d4')
+        # if 'd1' in pirate.getTeamSignal:
+        if (up==("island1" or "island2" or "island3") and pirate.investigate_up()[1]==("enemy" ) and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
+            return 1
+        if (down==("island1" or "island2" or "island3") and pirate.investigate_down()[1]==("enemy" ) and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
+            return 3
+        if (left==("island1" or "island2" or "island3") and pirate.investigate_left()[1]==("enemy" ) and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
+            return 4
+        if (right==("island1" or "island2" or "island3") and pirate.investigate_right()[1]==("enemy" ) and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
+            return 2
+        return circleAround(position[0],position[1],1,pirate)    
+    
 
-    if (up==("island1" or "island2" or "island3") and pirate.investigate_up()[1]=="enemy" and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
+    if (up==("island1" or "island2" or "island3") and pirate.investigate_up()[1]==("enemy" ) and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
         return 1
-    if (down==("island1" or "island2" or "island3") and pirate.investigate_down()[1]=="enemy" and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
+    if (down==("island1" or "island2" or "island3") and pirate.investigate_down()[1]==("enemy" ) and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
         return 3
-    if (left==("island1" or "island2" or "island3") and pirate.investigate_left()[1]=="enemy" and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
+    if (left==("island1" or "island2" or "island3") and pirate.investigate_left()[1]==("enemy" ) and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
         return 4
-    if (right==("island1" or "island2" or "island3") and pirate.investigate_right()[1]=="enemy" and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
+    if (right==("island1" or "island2" or "island3") and pirate.investigate_right()[1]==("enemy" ) and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
         return 2
 
     s = pirate.getTeamSignal()
@@ -335,9 +359,11 @@ def ActPirate(pirate):
     if _id % 4 == 0 or _id % 4 == 1 or _id%4==2:
         return Direction(pirate)
 
-    
 
 def ActTeam(team):
+    l = team.trackPlayers()
+    s = team.getTeamSignal()
+
     team.buildWalls(1)
     team.buildWalls(2)
     team.buildWalls(3)
