@@ -18,7 +18,6 @@ def moveTo(x, y, Pirate):
     else:
         return (position[1] < y) * 2 + 1
 
-#
 def moveAway(x, y, Pirate):
     position = Pirate.getPosition()
     if position[0] == x and position[1] == y:
@@ -62,7 +61,7 @@ def checkIsland(pirate):
     ne = pirate.investigate_ne()
     sw = pirate.investigate_sw()
     se = pirate.investigate_se()
-    if (up[0:-1] == "island" or down[0:-1] == "island") and (left[0:-1] == "island" or right[0:-1] == "island"):
+    if ("island" in up[0] or "island" in down[0]) and ("island" in left[0] or "island" in right[0]):
         return True
     else:
         return False
@@ -87,6 +86,11 @@ def ActPirate(pirate):
     se = pirate.investigate_se()
     tp = pirate.trackPlayers()
     squad=_id%4
+        
+    # if island is not captured by us squad[2] will go to the island   
+
+    # scouting captured island
+    position = pirate.getPosition()
     if pirate.getTeamSignal()== '':
         team_sig="0,"+"x,"+"y,"+"0,"+"x,"+"y,"+"0,"+"x,"+"y,"+"9,"+"x,"+"y"
         pirate.setTeamSignal(team_sig)
@@ -111,19 +115,19 @@ def ActPirate(pirate):
     elif(asquad==1) and squad==asquad:
         return moveTo(xi,yi,pirate)
     elif(asquad==2) and squad==asquad:
-            return moveTo(xi,yi,pirate)
+        return moveTo(xi,yi,pirate)
     elif(asquad==3) and squad==2:
         return moveTo(xi,yi,pirate)
 #team signalling
     if(l[0]==1 and tp[0]!="myCaptured"):
         if squad==3:
-            moveTo(int(l[1],int(l[2])))
+            moveTo(int(l[1]),int(l[2]))
     if(l[3]==1 and tp[1]!="myCaptured"):
         if squad==3:
-            moveTo(int(l[4],int(l[5])))
+            moveTo(int(l[4]),int(l[5]))
     if(l[6]==1 and tp[2]!="myCaptured"):
         if squad==3:
-            moveTo(int(l[7],int(l[8])))
+            moveTo(int(l[7]),int(l[8]))
         
     if (
         (up == "island1" and tp[0] != "myCaptured" and l[0]!=up[-1]) 
@@ -148,7 +152,6 @@ def ActPirate(pirate):
         sig=','.join(map(str,l))
         pirate.setTeamSignal(sig)
         return moveTo(x,y-1,pirate)
-
     if (
         (down == "island1" and tp[0] != "myCaptured" and l[0]!=down[-1])
         or (down == "island2" and tp[1] != "myCaptured" and l[3]!=down[-1])
@@ -171,7 +174,7 @@ def ActPirate(pirate):
         l[11]=str(y)
         sig=','.join(map(str,l))
         pirate.setTeamSignal(sig)
-        return moveTo(x,y-1,pirate)
+        return moveTo(x,y+1,pirate)
 
     if (
         (left == "island1" and tp[0] != "myCaptured" and l[0]!=left[-1])
@@ -195,7 +198,7 @@ def ActPirate(pirate):
         l[11]=str(y)
         sig=','.join(map(str,l))
         pirate.setTeamSignal(sig)
-        return moveTo(x,y-1,pirate)
+        return moveTo(x-1,y,pirate)
 
     if (
         (right == "island1" and tp[0] != "myCaptured" and l[0]!=right[-1])
@@ -219,7 +222,7 @@ def ActPirate(pirate):
         l[11]=str(y)
         sig=','.join(map(str,l))
         pirate.setTeamSignal(sig)
-        return moveTo(x,y-1,pirate)
+        return moveTo(x+1,y,pirate)
 
     if (
         (nw == "island1" and tp[0] != "myCaptured" and l[0]!=nw[-1])
@@ -243,7 +246,7 @@ def ActPirate(pirate):
         l[11]=str(y)
         sig=','.join(map(str,l))
         pirate.setTeamSignal(sig)
-        return moveTo(x,y-1,pirate)
+        return moveTo(x-1,y-1,pirate)
 
     if (
         (se == "island1" and tp[0] != "myCaptured" and l[0]!=se[-1])
@@ -267,7 +270,7 @@ def ActPirate(pirate):
         l[11]=str(y)
         sig=','.join(map(str,l))
         pirate.setTeamSignal(sig)
-        return moveTo(x,y-1,pirate)
+        return moveTo(x+1,y+1,pirate)
 
     if (
         (ne == "island1" and tp[0] != "myCaptured" and l[0]!=ne[-1])
@@ -291,7 +294,7 @@ def ActPirate(pirate):
         l[11]=str(y)
         sig=','.join(map(str,l))
         pirate.setTeamSignal(sig)
-        return moveTo(x,y-1,pirate)
+        return moveTo(x+1,y-1,pirate)
 
     if (
         (sw == "island1" and tp[0] != "myCaptured" and l[0]!=sw[-1])
@@ -315,7 +318,7 @@ def ActPirate(pirate):
         l[11]=str(y)
         sig=','.join(map(str,l))
         pirate.setTeamSignal(sig)
-        return moveTo(x,y-1,pirate)
+        return moveTo(x-1,y+1,pirate)
 
     if(squad==3):
         return moveAway(x,y,pirate)
@@ -431,3 +434,51 @@ def Direction(pirate):
         if dir == '4':
             arr = [1, 1, 1, 1, 2, 2, 2, 2, 4, 3]
             return random.choice(arr)
+
+def IslandCenter(pirate,position):
+    x = int(position[0])
+    y = int(position[1])
+    if (pirate.investigate_up()[0][0:-1] == 'island' and pirate.investigate_down()[0][0:-1] == 'island' and 
+        pirate.investigate_left()[0][0:-1] == 'island' and pirate.investigate_right()[0][0:-1] == 'island'):
+        return (x,y)
+    if (pirate.investigate_up()[0][0:-1] == 'island' and pirate.investigate_right()[0][0:-1] == 'island' and
+        pirate.investigate_down()[0][0:-1] == 'island'):
+        return (x+1,y)
+    if (pirate.investigate_up()[0][0:-1] == 'island' and pirate.investigate_left()[0][0:-1] == 'island' and
+        pirate.investigate_down()[0][0:-1] == 'island'):
+        return (x-1,y)
+    if (pirate.investigate_right()[0][0:-1] == 'island' and pirate.investigate_left()[0][0:-1] == 'island' and
+        pirate.investigate_down()[0][0:-1] == 'island'):
+        return (x,y+1)
+    if (pirate.investigate_right()[0][0:-1] == 'island' and pirate.investigate_left()[0][0:-1] == 'island' and
+        pirate.investigate_up()[0][0:-1] == 'island'):
+        return (x,y-1)
+    if (pirate.investigate_right()[0][0:-1] == 'island' and pirate.investigate_up()[0][0:-1] == 'island'):
+        return (x+1,y-1)
+    if (pirate.investigate_right()[0][0:-1] == 'island' and pirate.investigate_down()[0][0:-1] == 'island'):
+        return (x+1,y+1)
+    if (pirate.investigate_left()[0][0:-1] == 'island' and pirate.investigate_down()[0][0:-1] == 'island'):
+        return (x-1,y+1)
+    if (pirate.investigate_left()[0][0:-1] == 'island' and pirate.investigate_up()[0][0:-1] == 'island'):
+        return (x-1,y-1)
+        
+        
+        
+        
+    #FUNCTION FOR NEAREST PIRATES
+def nearest_pirates(x,y,team,pirate):
+    x_=pirate.getPosition()[0]
+    y_=pirate.getPosition()[1]
+    number=team.getTotalPirates()
+    for pirateno in range(1,number+1):   
+        x_=pirate.getPosition()[0]
+        y_=pirate.getPosition()[1]
+        if (abs(x-x_)>2 or abs(y-y_)>2):
+            number=number-1   
+                
+    stringsig=pirate.getTeamSignal()+str(number)
+    pirate.setTeamSignal(stringsig)
+        
+        
+       
+                 
