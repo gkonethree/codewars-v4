@@ -92,23 +92,14 @@ def ActPirate(pirate):
     # scouting captured island
     position = pirate.getPosition()
     if pirate.getTeamSignal()== '':
-        team_sig="0,"+"x,"+"y,"+"0,"+"x,"+"y,"+"0,"+"x,"+"y,"+"9,"+"x,"+"y"
+        team_sig="0,"+"x,"+"y,"+"0,"+"x,"+"y,"+"0,"+"x,"+"y,"+'0,'+'x,'+'y,'
         pirate.setTeamSignal(team_sig)
+    
 # some condition for pirates which are alloted for scouting
-    if checkIsland(pirate):
-        print(1)
+    if checkIsland(pirate) and (_id%7==0 or _id%7==1):
+        
         if position != IslandCenter(pirate,position):
-            print(position, IslandCenter(pirate,position))
             return moveTo(IslandCenter(pirate,position)[0],IslandCenter(pirate,position)[1],pirate)
-        # if pirate.investigate_up()[1] == 'blank':
-        #     pirate.setTeamSignal(pirate.getTeamSignal+',d1')
-        # if pirate.investigate_down()[1] == 'blank':
-        #     pirate.setTeamSignal(pirate.getTeamSignal+',d3')
-        # if pirate.investigate_right()[1] == 'blank':
-        #     pirate.setTeamSignal(pirate.getTeamSignal+',d2')
-        # if pirate.investigate_left()[1] == 'blank':
-        #     pirate.setTeamSignal(pirate.getTeamSignal+',d4')
-        # if 'd1' in pirate.getTeamSignal:
         if (up==("island1" or "island2" or "island3") and pirate.investigate_up()[1]==("enemy" ) and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
             return 1
         if (down==("island1" or "island2" or "island3") and pirate.investigate_down()[1]==("enemy" ) and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
@@ -129,20 +120,21 @@ def ActPirate(pirate):
     if (right==("island1" or "island2" or "island3") and pirate.investigate_right()[1]==("enemy" ) and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
         return 2
 
+    
+#team signalling
     s = pirate.getTeamSignal()
     l = s.split(",")
-    xi=l[10]
-    yi=l[11]
-    asquad=s[9]
-    if (asquad==0) and squad==asquad:
-        return moveTo(xi, yi, pirate)
-    elif(asquad==1) and squad==asquad:
-        return moveTo(xi,yi,pirate)
-    elif(asquad==2) and squad==asquad:
-        return moveTo(xi,yi,pirate)
-    elif(asquad==3) and squad==2:
-        return moveTo(xi,yi,pirate)
-#team signalling
+    # xi=l[10]
+    # yi=l[11]
+    # asquad=s[9]
+    # if (asquad==0) and squad==asquad:
+    #     return moveTo(xi, yi, pirate)
+    # elif(asquad==1) and squad==asquad:
+    #     return moveTo(xi,yi,pirate)
+    # elif(asquad==2) and squad==asquad:
+    #     return moveTo(xi,yi,pirate)
+    # elif(asquad==3) and squad==2:
+    #     return moveTo(xi,yi,pirate)
     if(l[0]==1 and tp[0]!="myCaptured"):
         if squad==3:
             moveTo(int(l[1]),int(l[2]))
@@ -344,10 +336,6 @@ def ActPirate(pirate):
         pirate.setTeamSignal(sig)
         return moveTo(x-1,y+1,pirate)
 
-    if(squad==3):
-        return moveAway(x,y,pirate)
-
-
 #teams
 
     if pirate.getSignal() == '':
@@ -356,8 +344,7 @@ def ActPirate(pirate):
     #     return moveAway(x, y, pirate)
     # _id % 4 == 1 vertical                          1   2
     # _id % 4 == 0 horizontal                        4   3
-    if _id % 4 == 0 or _id % 4 == 1 or _id%4==2:
-        return Direction(pirate)
+    return Direction(pirate)
 
 
 def ActTeam(team):
@@ -368,8 +355,6 @@ def ActTeam(team):
     team.buildWalls(2)
     team.buildWalls(3)
     
-
-
 
 def Direction(pirate):
     up = pirate.investigate_up()
@@ -423,42 +408,42 @@ def Direction(pirate):
     dir = pirate.getSignal()[0]
     if int(pirate.getID()) % 4 == 0:
         if dir == '1':
-            arr = [3, 3, 3, 2, 2, 2, 2, 2, 2, 2]
+            arr = [3, 3, 2, 2, 2, 2, 2, 2, 2, 2]
             return random.choice(arr)
         if dir == '2':
-            arr = [3, 3, 3, 4, 4, 4, 4, 4, 4, 4]
+            arr = [3, 3, 4, 4, 4, 4, 4, 4, 4, 4]
             return random.choice(arr)
         if dir == '3':
-            arr = [1, 1, 1, 4, 4, 4, 4, 4, 4, 4]
+            arr = [1, 1, 4, 4, 4, 4, 4, 4, 4, 4]
             return random.choice(arr)
         if dir == '4':
-            arr = [1, 1, 1, 2, 2, 2, 2, 2, 2, 2]
+            arr = [1, 1, 2, 2, 2, 2, 2, 2, 2, 2]
             return random.choice(arr)
     if int(pirate.getID()) % 4 == 1:
         if dir == '1':
-            arr = [3, 3, 3, 3, 3, 3, 3, 2, 2, 2]
+            arr = [3, 3, 3, 3, 3, 3, 3, 3, 2, 2]
             return random.choice(arr)
         if dir == '2':
-            arr = [3, 3, 3, 3, 3, 3, 3, 4, 4, 4]
+            arr = [3, 3, 3, 3, 3, 3, 3, 3, 4, 4]
             return random.choice(arr)
         if dir == '3':
-            arr = [1, 1, 1, 1, 1, 1, 1, 4, 4, 4]
+            arr = [1, 1, 1, 1, 1, 1, 1, 1, 4, 4]
             return random.choice(arr)
         if dir == '4':
-            arr = [1, 1, 1, 1, 1, 1, 1, 2, 2, 2]
+            arr = [1, 1, 1, 1, 1, 1, 1, 1, 2, 2]
             return random.choice(arr)
-    if int(pirate.getID()) % 4 == 2:
+    else:
         if dir == '1':
-            arr = [3, 3, 3, 3, 2, 2, 2, 2, 1, 4]
+            arr = [3, 3, 3, 2, 2, 2, 2, 2, 1, 4]
             return random.choice(arr)
         if dir == '2':
-            arr = [3, 3, 3, 3, 4, 4, 4, 4, 1, 2]
+            arr = [3, 3, 3, 4, 4, 4, 4, 4, 1, 2]
             return random.choice(arr)
         if dir == '3':
-            arr = [1, 1, 1, 1, 4, 4, 4, 4, 2, 3]
+            arr = [1, 1, 1, 1, 1, 1, 4, 4, 2, 3]
             return random.choice(arr)
         if dir == '4':
-            arr = [1, 1, 1, 1, 2, 2, 2, 2, 4, 3]
+            arr = [1, 1, 1, 2, 2, 2, 2, 2, 4, 3]
             return random.choice(arr)
 
 def IslandCenter(pirate,position):
@@ -504,7 +489,3 @@ def nearest_pirates(x,y,team,pirate):
                 
     stringsig=pirate.getTeamSignal()+str(number)
     pirate.setTeamSignal(stringsig)
-        
-        
-       
-                 
