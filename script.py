@@ -254,11 +254,11 @@ def ActPirate(pirate):
 
     if pirate.getSignal() == '':
         pirate.setSignal('988080')
-    if (squad == 2):
-        return moveAway(x, y, pirate)
+    # if (squad == 2):
+    #     return moveAway(x, y, pirate)
     # _id % 4 == 1 vertical                          1   2
     # _id % 4 == 0 horizontal                        4   3
-    if _id % 4 == 0 or _id % 4 == 1:
+    if _id % 4 == 0 or _id % 4 == 1 or _id%4==2:
         return Direction(pirate)
 
 
@@ -349,26 +349,39 @@ def Direction(pirate):
     if int(pirate.getID()) % 4 == 0:
         if dir == '1':
             arr = [3, 3, 3, 2, 2, 2, 2, 2, 2, 2]
-            return arr[random.randint(0, 9)]
+            return random.choice(arr)
         if dir == '2':
             arr = [3, 3, 3, 4, 4, 4, 4, 4, 4, 4]
-            return arr[random.randint(0, 9)]
+            return random.choice(arr)
         if dir == '3':
             arr = [1, 1, 1, 4, 4, 4, 4, 4, 4, 4]
-            return arr[random.randint(0, 9)]
+            return random.choice(arr)
         if dir == '4':
             arr = [1, 1, 1, 2, 2, 2, 2, 2, 2, 2]
-            return arr[random.randint(0, 9)]
+            return random.choice(arr)
     if int(pirate.getID()) % 4 == 1:
         if dir == '1':
             arr = [3, 3, 3, 3, 3, 3, 3, 2, 2, 2]
-            return arr[random.randint(0, 9)]
+            return random.choice(arr)
         if dir == '2':
             arr = [3, 3, 3, 3, 3, 3, 3, 4, 4, 4]
-            return arr[random.randint(0, 9)]
+            return random.choice(arr)
         if dir == '3':
             arr = [1, 1, 1, 1, 1, 1, 1, 4, 4, 4]
-            return arr[random.randint(0, 9)]
+            return random.choice(arr)
         if dir == '4':
             arr = [1, 1, 1, 1, 1, 1, 1, 2, 2, 2]
-            return arr[random.randint(0, 9)]
+            return random.choice(arr)
+    if int(pirate.getID()) % 4 == 2:
+        if dir == '1':
+            arr = [3, 3, 3, 3, 2, 2, 2, 2, 1, 4]
+            return random.choice(arr)
+        if dir == '2':
+            arr = [3, 3, 3, 3, 4, 4, 4, 4, 1, 2]
+            return random.choice(arr)
+        if dir == '3':
+            arr = [1, 1, 1, 1, 4, 4, 4, 4, 2, 3]
+            return random.choice(arr)
+        if dir == '4':
+            arr = [1, 1, 1, 1, 2, 2, 2, 2, 4, 3]
+            return random.choice(arr)
