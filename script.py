@@ -90,8 +90,17 @@ def ActPirate(pirate):
     
     island_pos=[[-1,-1],[-1,-1],[-1,-1]]
     
-    # for i in range(3):
-    #     if island_pos[i][0]!=-1:
+    for i in range(3):
+        if island_pos[i][0]!=-1:
+            if pirate.trackPlayers()[i]!="myCaptured":
+                x=island_pos[i][0]
+                y=island_pos[i][1]
+                if squad==2:
+                    moveTo(x,y,pirate)
+    # if island is not captured by us squad[2] will go to the island   
+
+
+
 
 #team signalling
     if (
