@@ -2,7 +2,7 @@ import random
 import math
 
 
-name = "sexy"
+name = "SCRIPT"
 
 
 def moveTo(x, y, Pirate):
@@ -299,6 +299,7 @@ def ActPirate(pirate):
         pirate.setTeamSignal(sig)
         return moveTo(x-1,y+1,pirate)
     
+    
 # some condition for pirates which are alloted for scouting
     if (checkIsland(pirate) and (_id%8==0 or _id%8==1 or _id%8==2)) or pirate.getSignal()=="scout":
         
@@ -313,8 +314,9 @@ def ActPirate(pirate):
         if (right==("island1" or "island2" or "island3") and pirate.investigate_right()[1]==("enemy" ) and pirate.getTotalGunpowder() >100):
             return 2
         pirate.setSignal("scout")
-        return circleAround(position[0],position[1],1,pirate)    
+        return circleAround(position[0],position[1],1,pirate)
     
+    scoutin(pirate)
 
     if (up==("island1" or "island2" or "island3") and pirate.investigate_up()[1]==("enemy" ) and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
         return 1
@@ -326,7 +328,7 @@ def ActPirate(pirate):
         return 2
 
 
-
+    scoutout(pirate)    
 #teams
 
     if pirate.getSignal() == '':
@@ -336,7 +338,7 @@ def ActPirate(pirate):
     # _id % 4 == 1 vertical                          1   2
     # _id % 4 == 0 horizontal                        4   3
     return Direction(pirate)
-
+    
 
 def ActTeam(team):
     l = team.trackPlayers()
@@ -514,10 +516,12 @@ def nearest_pirates(x,y,team,pirate):
 
 
 #FUNCTION
-def scoutout(pirate,team):
-    if pirate.getSignal()=="scout" and team.getTotalGunpowder()<300 and team.getTotalPirates()<20:
-        pirate.setSignal("")
+def scoutout(pirate):#,team):
+    if pirate.getSignal()[1:]=="scout" and pirate.getTotalGunpowder()<300:# and team.getTotalPirates()<20:
+        a=random.randint(1,4)
+        pirate.setSignal(str(a))
         
-def scoutin(pirate,team):
-    if pirate.getSignal()!="scout" and team.getTotalGunpowder()>600 and team.getTotalPirates()>45:
-        pirate.setSignal("scout")
+def scoutin(pirate):#,team):
+    if pirate.getSignal()[1:]!="scout" and pirate.getTotalGunpowder()>600:# and team.getTotalPirates()>45:
+        a=random.randint(1,4)
+        pirate.setSignal(str(a)+"scout")
