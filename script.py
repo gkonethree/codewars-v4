@@ -300,7 +300,7 @@ def ActPirate(pirate):
         return moveTo(x-1,y+1,pirate)
     
 # some condition for pirates which are alloted for scouting
-    if checkIsland(pirate) and (_id%8==0 or _id%8==1 or _id%8==2):
+    if (checkIsland(pirate) and (_id%8==0 or _id%8==1 or _id%8==2)) or pirate.getSignal()=="scout":
         
         if position != IslandCenter(pirate,position):
             return moveTo(IslandCenter(pirate,position)[0],IslandCenter(pirate,position)[1],pirate)
@@ -312,6 +312,7 @@ def ActPirate(pirate):
             return 4
         if (right==("island1" or "island2" or "island3") and pirate.investigate_right()[1]==("enemy" ) and pirate.getTotalGunpowder() >100):
             return 2
+        pirate.setSignal("scout")
         return circleAround(position[0],position[1],1,pirate)    
     
 
@@ -508,3 +509,15 @@ def nearest_pirates(x,y,team,pirate):
                 
     stringsig=pirate.getTeamSignal()+str(number)
     pirate.setTeamSignal(stringsig)
+
+
+
+
+#FUNCTION
+def scoutout(pirate,team):
+    if pirate.getSignal()=="scout" and team.getTotalGunpowder()<300 and team.getTotalPirates()<20:
+        pirate.setSignal("")
+        
+def scoutin(pirate,team):
+    if pirate.getSignal()!="scout" and team.getTotalGunpowder()>600 and team.getTotalPirates()>45:
+        pirate.setSignal("scout")
