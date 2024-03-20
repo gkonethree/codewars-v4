@@ -370,13 +370,13 @@ def Direction(pirate):
     elif up[0] == 'wall':
         signal = pirate.getSignal()
         if pirate.getSignal() == '4':
-            signal = '1' + signal[1:]
-        else:
             signal = '2' + signal[1:]
+        else:
+            signal = '1' + signal[1:]
         pirate.setSignal(signal)
     elif down[0] == 'wall':
         signal = pirate.getSignal()
-        if pirate.getSignal() == '1':
+        if pirate.getSignal()[0] == '1':
             signal = '4' + signal[1:]
         else:
             signal = '3' + signal[1:]
@@ -391,9 +391,9 @@ def Direction(pirate):
     elif right[0] == 'wall':
         signal = pirate.getSignal()
         if pirate.getSignal() == '1':
-            signal = '2' + signal[1:]
-        else:
             signal = '3' + signal[1:]
+        else:
+            signal = '2' + signal[1:]
         pirate.setSignal(signal)
     dir = pirate.getSignal()[0]
     # if int(pirate.getID()) % 4 == 0:
@@ -463,6 +463,7 @@ def Direction(pirate):
         if dir == '4':
             arr = [1, 1,1,2,1]
             return random.choice(arr)
+        # return random.randint(1,4)
 
 def IslandCenter(pirate,position):
     x = int(position[0])
