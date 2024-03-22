@@ -359,6 +359,7 @@ def ActTeam(team):
     
 
 def Direction(pirate):
+    _id=int(pirate.getID())
     up = pirate.investigate_up()
     down = pirate.investigate_down()
     left = pirate.investigate_left()
@@ -409,29 +410,27 @@ def Direction(pirate):
         pirate.setSignal(signal)
     dir = pirate.getSignal()[0]
     total_number = int(pirate.getTeamSignal().split(',')[12])
-    sin = round(float(math.sin(int(pirate.getID())/total_number)),2)
-    cos = round(float(math.cos(int(pirate.getID())/total_number)),2)
-    # if int(pirate.getID())%4 == 0 or int(pirate.getID())%4 == 1:
+    sin = float(round(float(math.sin((int(pirate.getID())/total_number)*math.pi/2)),2))
+    cos = float(round(float(math.cos((int(pirate.getID())/total_number)*math.pi/2)),2))
+    
     if dir == '1':  
         arr = np.array([3, 2])
-        p = np.array(sin,cos)
-        probabilities /= np.sum(p)
-        return arr[np.random.choice(arr, p=probabilities)]
-    if dir == '2':
-        arr = [3, 4]
-        p = np.array(sin,cos)
-        probabilities /= np.sum(p)
-        return arr[np.random.choice(arr, p=probabilities)]
-    if dir == '3':
-        arr = [1, 4]
-        p = np.array(sin,cos)
-        probabilities /= np.sum(p)
-        return arr[np.random.choice(arr, p=probabilities)]
-    if dir == '4':
-        arr = [1, 2]
-        p = np.array(sin,cos)
-        probabilities /= np.sum(p)
-        return arr[np.random.choice(arr, p=probabilities)]
+    elif dir == '2':
+        arr = np.array([3, 4])
+    elif dir == '3':
+        arr = np.array([1, 4])
+    elif dir == '4':
+        arr = np.array([1, 2])
+    else:
+        arr=np.array([0,0])
+
+    p = np.array([abs(sin), abs(cos)])
+    p /= np.sum(p)  # Normalize probabilities based on all directions
+
+    if _id%2==0:
+        return np.random.choice(arr, p=p)
+    else:
+        return np.random.choice(arr, p=[p[1],p[0]])
     # if int(pirate.getID())%4 == 2:
     #     if dir == '1':  
     #         arr = [2,2,2,2,3]
