@@ -1,5 +1,6 @@
 import random
 import math
+import numpy as np
 
 
 name = "SCRIPT"
@@ -407,48 +408,58 @@ def Direction(pirate):
             signal = '2' + signal[1:]
         pirate.setSignal(signal)
     dir = pirate.getSignal()[0]
-    if int(pirate.getID())%4 == 0 or int(pirate.getID())%4 == 1:
-        if dir == '1':  
-            arr = [3, 2]
-            return random.choice(arr)
-        if dir == '2':
-            arr = [3, 4]
-            return random.choice(arr)
-        if dir == '3':
-            arr = [1, 4]
-            return random.choice(arr)
-        if dir == '4':
-            arr = [1, 2]
-            return random.choice(arr)
-    if int(pirate.getID())%4 == 2:
-        if dir == '1':  
-            arr = [2,2,2,2,3]
-            print(random.choice(arr))
-            return random.choice(arr)
-        if dir == '2':
-            arr = [3, 4,4,4,4]
-            return random.choice(arr)
-        if dir == '3':
-            arr = [1, 4,4,4,4]
-            return random.choice(arr)
-        if dir == '4':
-            arr = [1, 2,2,2,2]
-            return random.choice(arr)
-    if int(pirate.getID())%4 == 3:
-        if dir == '1':  
-            arr = [2,3,3,3,3]
-            return random.choice(arr)
-        if dir == '2':
-            arr = [3, 3,3,4,3]
-            return random.choice(arr)
-        if dir == '3':
-            arr = [1, 1,1,4,1]
-            return random.choice(arr)
-        if dir == '4':
-            arr = [1, 1,1,2,1]
-            return random.choice(arr)
+    total_number = int(pirate.getTeamSignal().split(',')[12])
+    sin = round(float(math.sin(int(pirate.getID())/total_number)),2)
+    cos = round(float(math.cos(int(pirate.getID())/total_number)),2)
+    # if int(pirate.getID())%4 == 0 or int(pirate.getID())%4 == 1:
+    if dir == '1':  
+        arr = np.array([3, 2])
+        p = np.array(sin,cos)
+        probabilities /= np.sum(p)
+        return arr[np.random.choice(arr, p=probabilities)]
+    if dir == '2':
+        arr = [3, 4]
+        p = np.array(sin,cos)
+        probabilities /= np.sum(p)
+        return arr[np.random.choice(arr, p=probabilities)]
+    if dir == '3':
+        arr = [1, 4]
+        p = np.array(sin,cos)
+        probabilities /= np.sum(p)
+        return arr[np.random.choice(arr, p=probabilities)]
+    if dir == '4':
+        arr = [1, 2]
+        p = np.array(sin,cos)
+        probabilities /= np.sum(p)
+        return arr[np.random.choice(arr, p=probabilities)]
+    # if int(pirate.getID())%4 == 2:
+    #     if dir == '1':  
+    #         arr = [2,2,2,2,3]
+    #         print(random.choice(arr))
+    #         return random.choice(arr)
+    #     if dir == '2':
+    #         arr = [3, 4,4,4,4]
+    #         return random.choice(arr)
+    #     if dir == '3':
+    #         arr = [1, 4,4,4,4]
+    #         return random.choice(arr)
+    #     if dir == '4':
+    #         arr = [1, 2,2,2,2]
+    #         return random.choice(arr)
+    # if int(pirate.getID())%4 == 3:
+    #     if dir == '1':  
+    #         arr = [2,3,3,3,3]
+    #         return random.choice(arr)
+    #     if dir == '2':
+    #         arr = [3, 3,3,4,3]
+    #         return random.choice(arr)
+    #     if dir == '3':
+    #         arr = [1, 1,1,4,1]
+    #         return random.choice(arr)
+    #     if dir == '4':
+    #         arr = [1, 1,1,2,1]
+    #         return random.choice(arr)
         # return random.randint(1,4)
-
 def IslandCenter(pirate,position):
     x = int(position[0])
     y = int(position[1])
@@ -502,4 +513,3 @@ def scout(pirate):#,team):
         pirate.setSignal(pirate.getSignal()[0]+" "+pirate.getSignal()[2:])
     if pirate.getSignal()[1]!="s" and pirate.getTotalGunpowder()>600 and int(pirate.getTeamSignal().split(',')[12])>45:
         pirate.setSignal(pirate.getSignal()[0]+"s"+pirate.getSignal()[2:])
-        
