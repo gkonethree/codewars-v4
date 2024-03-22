@@ -97,249 +97,277 @@ def ActPirate(pirate):
         
     s = pirate.getTeamSignal()
     l = s.split(",")
-#team signalling
-    if(l[0]=='1' and tp[0]!="myCaptured"):
-        if position[0] !=int (l[1]) or position[1]!=int(l[2]):
-            moveTo(int(l[1]),int(l[2]),pirate)
-        else:
-            return 0
-    if(l[3]=='2' and tp[1]!="myCaptured"):
-        if position[0] !=int (l[4]) or position[1]!=int(l[5]):
-            moveTo(int(l[4]),int(l[5]),pirate)
-        else:
-            return 0
-    if(l[6]=='3' and tp[2]!="myCaptured"):
-        if position[0] !=int (l[7]) or position[1]!=int(l[8]):
-            moveTo(int(l[7]),int(l[8]),pirate)
-        else:
-            return 0
+    if (int(pirate.getCurrentFrame())<1000):
+        if pirate.getSignal() == '':
+            pirate.setSignal('9 8080')
+        scout(pirate)
+
+        if (checkIsland(pirate) and (_id%8==0 or _id%8==1 or _id%8==2)) and pirate.getSignal()[1]=="s":
+            
+            if position != IslandCenter(pirate,position):
+                return moveTo(IslandCenter(pirate,position)[0],IslandCenter(pirate,position)[1],pirate)
+            if (up==("island1" or "island2" or "island3") and pirate.investigate_up()[1]==("enemy" ) and pirate.getTotalGunpowder() >100 ):
+                return 1
+            if (down==("island1" or "island2" or "island3") and pirate.investigate_down()[1]==("enemy" ) and pirate.getTotalGunpowder() >100 ):
+                return 3
+            if (left==("island1" or "island2" or "island3") and pirate.investigate_left()[1]==("enemy" ) and pirate.getTotalGunpowder() >100 ):
+                return 4
+            if (right==("island1" or "island2" or "island3") and pirate.investigate_right()[1]==("enemy" ) and pirate.getTotalGunpowder() >100):
+                return 2
+            pirate.setSignal("scout")
+            return circleAround(position[0],position[1],1,pirate)
         
-    if (
-        (up == "island1" and tp[0] != "myCaptured" and l[0]!=up[-1]) 
-        or (up == "island2" and tp[1] != "myCaptured" and l[3]!=up[-1])
-        or (up == "island3" and tp[2] != "myCaptured" and l[6]!=up[-1])
-    ):
-        if up[-1]=='1':
-            l[0]=1
-            l[1]=str(x)
-            l[2]=str(y-1)
-        if up[-1]=='2':
-            l[3]=2
-            l[4]=str(x)
-            l[5]=str(y-1)
-        if up[-1]=='3':
-            l[6]=3
-            l[7]=str(x)
-            l[8]=str(y-1)
-        l[9]=str(squad)
-        l[10]=str(x)
-        l[11]=str(y-1)
-        sig=','.join(map(str,l))
-        pirate.setTeamSignal(sig)
-        return moveTo(x,y-1,pirate)
-    if (
-        (down == "island1" and tp[0] != "myCaptured" and l[0]!=down[-1])
-        or (down == "island2" and tp[1] != "myCaptured" and l[3]!=down[-1])
-        or (down == "island3" and tp[2] != "myCaptured" and l[6]!=down[-1])
-    ):
-        if down[-1]=='1':
-            l[0]=1
-            l[1]=str(x)
-            l[2]=str(y+1)
-        if down[-1]=='2':
-            l[3]=2
-            l[4]=str(x)
-            l[5]=str(y+1)
-        if down[-1]=='3':
-            l[6]=3
-            l[7]=str(x)
-            l[8]=str(y+1)
-        l[9]=str(squad)
-        l[10]=str(x)
-        l[11]=str(y+1)
-        sig=','.join(map(str,l))
-        pirate.setTeamSignal(sig)
-        return moveTo(x,y+1,pirate)
+        if (up==("island1" or "island2" or "island3") and pirate.investigate_up()[1]==("enemy" ) and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
+            return 1
+        if (down==("island1" or "island2" or "island3") and pirate.investigate_down()[1]==("enemy" ) and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
+            return 3
+        if (left==("island1" or "island2" or "island3") and pirate.investigate_left()[1]==("enemy" ) and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
+            return 4
+        if (right==("island1" or "island2" or "island3") and pirate.investigate_right()[1]==("enemy" ) and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
+            return 2
 
-    if (
-        (left == "island1" and tp[0] != "myCaptured" and l[0]!=left[-1])
-        or (left == "island2" and tp[1] != "myCaptured" and l[3]!=left[-1])
-        or (left == "island3" and tp[2] != "myCaptured" and l[6]!=left[-1])
-    ):
-        if left[-1]=='1':
-            l[0]=1
-            l[1]=str(x-1)
-            l[2]=str(y)
-        if left[-1]=='2':
-            l[3]=2
-            l[4]=str(x-1)
-            l[5]=str(y)
-        if left[-1]=='3':
-            l[6]=3
-            l[7]=str(x-1)
-            l[8]=str(y)
-        l[9]=str(squad)
-        l[10]=str(x-1)
-        l[11]=str(y)
-        sig=','.join(map(str,l))
-        pirate.setTeamSignal(sig)
-        return moveTo(x-1,y,pirate)
+        return Direction(pirate)
+    else:
+#team signalling
+        if(l[0]=='1' and tp[0]!="myCaptured"):
+            if position[0] !=int (l[1]) or position[1]!=int(l[2]):
+                moveTo(int(l[1]),int(l[2]),pirate)
+            else:
+                return 0
+        if(l[3]=='2' and tp[1]!="myCaptured"):
+            if position[0] !=int (l[4]) or position[1]!=int(l[5]):
+                moveTo(int(l[4]),int(l[5]),pirate)
+            else:
+                return 0
+        if(l[6]=='3' and tp[2]!="myCaptured"):
+            if position[0] !=int (l[7]) or position[1]!=int(l[8]):
+                moveTo(int(l[7]),int(l[8]),pirate)
+            else:
+                return 0
+            
+        if (
+            (up == "island1" and tp[0] != "myCaptured" and l[0]!=up[-1]) 
+            or (up == "island2" and tp[1] != "myCaptured" and l[3]!=up[-1])
+            or (up == "island3" and tp[2] != "myCaptured" and l[6]!=up[-1])
+        ):
+            if up[-1]=='1':
+                l[0]=1
+                l[1]=str(x)
+                l[2]=str(y-1)
+            if up[-1]=='2':
+                l[3]=2
+                l[4]=str(x)
+                l[5]=str(y-1)
+            if up[-1]=='3':
+                l[6]=3
+                l[7]=str(x)
+                l[8]=str(y-1)
+            l[9]=str(squad)
+            l[10]=str(x)
+            l[11]=str(y-1)
+            sig=','.join(map(str,l))
+            pirate.setTeamSignal(sig)
+            return moveTo(x,y-1,pirate)
+        if (
+            (down == "island1" and tp[0] != "myCaptured" and l[0]!=down[-1])
+            or (down == "island2" and tp[1] != "myCaptured" and l[3]!=down[-1])
+            or (down == "island3" and tp[2] != "myCaptured" and l[6]!=down[-1])
+        ):
+            if down[-1]=='1':
+                l[0]=1
+                l[1]=str(x)
+                l[2]=str(y+1)
+            if down[-1]=='2':
+                l[3]=2
+                l[4]=str(x)
+                l[5]=str(y+1)
+            if down[-1]=='3':
+                l[6]=3
+                l[7]=str(x)
+                l[8]=str(y+1)
+            l[9]=str(squad)
+            l[10]=str(x)
+            l[11]=str(y+1)
+            sig=','.join(map(str,l))
+            pirate.setTeamSignal(sig)
+            return moveTo(x,y+1,pirate)
 
-    if (
-        (right == "island1" and tp[0] != "myCaptured" and l[0]!=right[-1])
-        or (right == "island2" and tp[1] != "myCaptured" and l[3]!=right[-1])
-        or (right == "island3" and tp[2] != "myCaptured" and l[6]!=right[-1])
-    ):
-        if right[-1]=='1':
-            l[0]=1
-            l[1]=str(x+1)
-            l[2]=str(y)
-        if right[-1]=='2':
-            l[3]=2
-            l[4]=str(x+1)
-            l[5]=str(y)
-        if right[-1]=='3':
-            l[6]=3
-            l[7]=str(x+1)
-            l[8]=str(y)
-        l[9]=str(squad)
-        l[10]=str(x+1)
-        l[11]=str(y)
-        sig=','.join(map(str,l))
-        pirate.setTeamSignal(sig)
-        return moveTo(x+1,y,pirate)
+        if (
+            (left == "island1" and tp[0] != "myCaptured" and l[0]!=left[-1])
+            or (left == "island2" and tp[1] != "myCaptured" and l[3]!=left[-1])
+            or (left == "island3" and tp[2] != "myCaptured" and l[6]!=left[-1])
+        ):
+            if left[-1]=='1':
+                l[0]=1
+                l[1]=str(x-1)
+                l[2]=str(y)
+            if left[-1]=='2':
+                l[3]=2
+                l[4]=str(x-1)
+                l[5]=str(y)
+            if left[-1]=='3':
+                l[6]=3
+                l[7]=str(x-1)
+                l[8]=str(y)
+            l[9]=str(squad)
+            l[10]=str(x-1)
+            l[11]=str(y)
+            sig=','.join(map(str,l))
+            pirate.setTeamSignal(sig)
+            return moveTo(x-1,y,pirate)
 
-    if (
-        (nw == "island1" and tp[0] != "myCaptured" and l[0]!=nw[-1])
-        or (nw == "island2" and tp[1] != "myCaptured" and l[3]!=nw[-1])
-        or (nw == "island3" and tp[2] != "myCaptured" and l[6]!=nw[-1])
-    ):
-        if nw[-1]=='1':
-            l[0]=1
-            l[1]=str(x-1)
-            l[2]=str(y-1)
-        if nw[-1]=='2':
-            l[3]=2
-            l[4]=str(x-1)
-            l[5]=str(y-1)
-        if nw[-1]=='3':
-            l[6]=3
-            l[7]=str(x-1)
-            l[8]=str(y-1)
-        l[9]=str(squad)
-        l[10]=str(x-1)
-        l[11]=str(y-1)
-        sig=','.join(map(str,l))
-        pirate.setTeamSignal(sig)
-        return moveTo(x-1,y-1,pirate)
+        if (
+            (right == "island1" and tp[0] != "myCaptured" and l[0]!=right[-1])
+            or (right == "island2" and tp[1] != "myCaptured" and l[3]!=right[-1])
+            or (right == "island3" and tp[2] != "myCaptured" and l[6]!=right[-1])
+        ):
+            if right[-1]=='1':
+                l[0]=1
+                l[1]=str(x+1)
+                l[2]=str(y)
+            if right[-1]=='2':
+                l[3]=2
+                l[4]=str(x+1)
+                l[5]=str(y)
+            if right[-1]=='3':
+                l[6]=3
+                l[7]=str(x+1)
+                l[8]=str(y)
+            l[9]=str(squad)
+            l[10]=str(x+1)
+            l[11]=str(y)
+            sig=','.join(map(str,l))
+            pirate.setTeamSignal(sig)
+            return moveTo(x+1,y,pirate)
 
-    if (
-        (se == "island1" and tp[0] != "myCaptured" and l[0]!=se[-1])
-        or (se == "island2" and tp[1] != "myCaptured" and l[3]!=se[-1])
-        or (se == "island3" and tp[2] != "myCaptured" and l[6]!=se[-1])
-    ):
-        if se[-1]=='1':
-            l[0]=1
-            l[1]=str(x+1)
-            l[2]=str(y+1)
-        if se[-1]=='2':
-            l[3]=2
-            l[4]=str(x+1)
-            l[5]=str(y+1)
-        if se[-1]=='3':
-            l[6]=3
-            l[7]=str(x+1)
-            l[8]=str(y+1)
-        l[9]=str(squad)
-        l[10]=str(x+1)
-        l[11]=str(y+1)
-        sig=','.join(map(str,l))
-        pirate.setTeamSignal(sig)
-        return moveTo(x+1,y+1,pirate)
+        if (
+            (nw == "island1" and tp[0] != "myCaptured" and l[0]!=nw[-1])
+            or (nw == "island2" and tp[1] != "myCaptured" and l[3]!=nw[-1])
+            or (nw == "island3" and tp[2] != "myCaptured" and l[6]!=nw[-1])
+        ):
+            if nw[-1]=='1':
+                l[0]=1
+                l[1]=str(x-1)
+                l[2]=str(y-1)
+            if nw[-1]=='2':
+                l[3]=2
+                l[4]=str(x-1)
+                l[5]=str(y-1)
+            if nw[-1]=='3':
+                l[6]=3
+                l[7]=str(x-1)
+                l[8]=str(y-1)
+            l[9]=str(squad)
+            l[10]=str(x-1)
+            l[11]=str(y-1)
+            sig=','.join(map(str,l))
+            pirate.setTeamSignal(sig)
+            return moveTo(x-1,y-1,pirate)
 
-    if (
-        (ne == "island1" and tp[0] != "myCaptured" and l[0]!=ne[-1])
-        or (ne == "island2" and tp[1] != "myCaptured" and l[3]!=ne[-1])
-        or (ne == "island3" and tp[2] != "myCaptured" and l[6]!=ne[-1])
-    ):
-        if ne[-1]=='1':
-            l[0]=1
-            l[1]=str(x+1)
-            l[2]=str(y-1)
-        if ne[-1]=='2':
-            l[3]=2
-            l[4]=str(x+1)
-            l[5]=str(y-1)
-        if ne[-1]=='3':
-            l[6]=3
-            l[7]=str(x+1)
-            l[8]=str(y-1)
-        l[9]=str(squad)
-        l[10]=str(x+1)
-        l[11]=str(y-1)
-        sig=','.join(map(str,l))
-        pirate.setTeamSignal(sig)
-        return moveTo(x+1,y-1,pirate)
+        if (
+            (se == "island1" and tp[0] != "myCaptured" and l[0]!=se[-1])
+            or (se == "island2" and tp[1] != "myCaptured" and l[3]!=se[-1])
+            or (se == "island3" and tp[2] != "myCaptured" and l[6]!=se[-1])
+        ):
+            if se[-1]=='1':
+                l[0]=1
+                l[1]=str(x+1)
+                l[2]=str(y+1)
+            if se[-1]=='2':
+                l[3]=2
+                l[4]=str(x+1)
+                l[5]=str(y+1)
+            if se[-1]=='3':
+                l[6]=3
+                l[7]=str(x+1)
+                l[8]=str(y+1)
+            l[9]=str(squad)
+            l[10]=str(x+1)
+            l[11]=str(y+1)
+            sig=','.join(map(str,l))
+            pirate.setTeamSignal(sig)
+            return moveTo(x+1,y+1,pirate)
 
-    if (
-        (sw == "island1" and tp[0] != "myCaptured" and l[0]!=sw[-1])
-        or (sw == "island2" and tp[1] != "myCaptured" and l[3]!=sw[-1])
-        or (sw == "island3" and tp[2] != "myCaptured" and l[6]!=sw[-1])
-    ):
-        if sw[-1]=='1':
-            l[0]=1
-            l[1]=str(x-1)
-            l[2]=str(y+1)
-        if sw[-1]=='2':
-            l[3]=2
-            l[4]=str(x-1)
-            l[5]=str(y+1)
-        if sw[-1]=='3':
-            l[6]=3
-            l[7]=str(x-1)
-            l[8]=str(y+1)
-        l[9]=str(squad)
-        l[10]=str(x-1)
-        l[11]=str(y+1)
-        sig=','.join(map(str,l))
-        pirate.setTeamSignal(sig)
-        return moveTo(x-1,y+1,pirate)
+        if (
+            (ne == "island1" and tp[0] != "myCaptured" and l[0]!=ne[-1])
+            or (ne == "island2" and tp[1] != "myCaptured" and l[3]!=ne[-1])
+            or (ne == "island3" and tp[2] != "myCaptured" and l[6]!=ne[-1])
+        ):
+            if ne[-1]=='1':
+                l[0]=1
+                l[1]=str(x+1)
+                l[2]=str(y-1)
+            if ne[-1]=='2':
+                l[3]=2
+                l[4]=str(x+1)
+                l[5]=str(y-1)
+            if ne[-1]=='3':
+                l[6]=3
+                l[7]=str(x+1)
+                l[8]=str(y-1)
+            l[9]=str(squad)
+            l[10]=str(x+1)
+            l[11]=str(y-1)
+            sig=','.join(map(str,l))
+            pirate.setTeamSignal(sig)
+            return moveTo(x+1,y-1,pirate)
+
+        if (
+            (sw == "island1" and tp[0] != "myCaptured" and l[0]!=sw[-1])
+            or (sw == "island2" and tp[1] != "myCaptured" and l[3]!=sw[-1])
+            or (sw == "island3" and tp[2] != "myCaptured" and l[6]!=sw[-1])
+        ):
+            if sw[-1]=='1':
+                l[0]=1
+                l[1]=str(x-1)
+                l[2]=str(y+1)
+            if sw[-1]=='2':
+                l[3]=2
+                l[4]=str(x-1)
+                l[5]=str(y+1)
+            if sw[-1]=='3':
+                l[6]=3
+                l[7]=str(x-1)
+                l[8]=str(y+1)
+            l[9]=str(squad)
+            l[10]=str(x-1)
+            l[11]=str(y+1)
+            sig=','.join(map(str,l))
+            pirate.setTeamSignal(sig)
+            return moveTo(x-1,y+1,pirate)
+        if pirate.getSignal() == '':
+            pirate.setSignal('9 8080')
+            scout(pirate)
+
+        if (checkIsland(pirate) and (_id%8==0 or _id%8==1 or _id%8==2)) and pirate.getSignal()[1]=="s":
+                
+            if position != IslandCenter(pirate,position):
+                    return moveTo(IslandCenter(pirate,position)[0],IslandCenter(pirate,position)[1],pirate)
+            if (up==("island1" or "island2" or "island3") and pirate.investigate_up()[1]==("enemy" ) and pirate.getTotalGunpowder() >100 ):
+                    return 1
+            if (down==("island1" or "island2" or "island3") and pirate.investigate_down()[1]==("enemy" ) and pirate.getTotalGunpowder() >100 ):
+                    return 3
+            if (left==("island1" or "island2" or "island3") and pirate.investigate_left()[1]==("enemy" ) and pirate.getTotalGunpowder() >100 ):
+                    return 4
+            if (right==("island1" or "island2" or "island3") and pirate.investigate_right()[1]==("enemy" ) and pirate.getTotalGunpowder() >100):
+                    return 2
+            pirate.setSignal("scout")
+            return circleAround(position[0],position[1],1,pirate)
+            
+        if (up==("island1" or "island2" or "island3") and pirate.investigate_up()[1]==("enemy" ) and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
+                return 1
+        if (down==("island1" or "island2" or "island3") and pirate.investigate_down()[1]==("enemy" ) and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
+                return 3
+        if (left==("island1" or "island2" or "island3") and pirate.investigate_left()[1]==("enemy" ) and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
+                return 4
+        if (right==("island1" or "island2" or "island3") and pirate.investigate_right()[1]==("enemy" ) and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
+                return 2
+
+        return Direction(pirate)
     
     
 # some condition for pirates which are alloted for scouting
-    if pirate.getSignal() == '':
-        pirate.setSignal('9 8080')
-    scout(pirate)
-
-    if (checkIsland(pirate) and (_id%8==0 or _id%8==1 or _id%8==2)) and pirate.getSignal()[1]=="s":
-        
-        if position != IslandCenter(pirate,position):
-            return moveTo(IslandCenter(pirate,position)[0],IslandCenter(pirate,position)[1],pirate)
-        if (up==("island1" or "island2" or "island3") and pirate.investigate_up()[1]==("enemy" ) and pirate.getTotalGunpowder() >100 ):
-            return 1
-        if (down==("island1" or "island2" or "island3") and pirate.investigate_down()[1]==("enemy" ) and pirate.getTotalGunpowder() >100 ):
-            return 3
-        if (left==("island1" or "island2" or "island3") and pirate.investigate_left()[1]==("enemy" ) and pirate.getTotalGunpowder() >100 ):
-            return 4
-        if (right==("island1" or "island2" or "island3") and pirate.investigate_right()[1]==("enemy" ) and pirate.getTotalGunpowder() >100):
-            return 2
-        pirate.setSignal("scout")
-        return circleAround(position[0],position[1],1,pirate)
     
-    if (up==("island1" or "island2" or "island3") and pirate.investigate_up()[1]==("enemy" ) and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
-        return 1
-    if (down==("island1" or "island2" or "island3") and pirate.investigate_down()[1]==("enemy" ) and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
-        return 3
-    if (left==("island1" or "island2" or "island3") and pirate.investigate_left()[1]==("enemy" ) and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
-        return 4
-    if (right==("island1" or "island2" or "island3") and pirate.investigate_right()[1]==("enemy" ) and pirate.getTotalGunpowder() >100 and checkIsland(pirate)==True):
-        return 2
-        
-#teams
-
-    # _id % 4 == 1 vertical                          1   2
-    # _id % 4 == 0 horizontal                        4   3
-    return Direction(pirate)
     
 
 def ActTeam(team):
