@@ -89,7 +89,7 @@ def ActPirate(pirate):
     tp = pirate.trackPlayers()
     squad=_id%4
         
-    # if island is not captured by us squad[2] will go to the island   
+    # move away form friend
     if pirate.investigate_up()[1] == 'friend':
         moveAway(x, y-1, pirate)
     if pirate.investigate_down()[1] == 'friend':
