@@ -28,6 +28,7 @@ def moveAway(x, y, Pirate):
     else:
         return (position[1] > y) * 2 + 1
 
+
 def circleAround(x, y, radius, Pirate, initial="abc", clockwise=True):
     position = Pirate.getPosition()
     rx = position[0]
@@ -81,14 +82,30 @@ def ActPirate(pirate):
     down = pirate.investigate_down()[0]
     left = pirate.investigate_left()[0]
     right = pirate.investigate_right()[0]
-    nw = pirate.investigate_nw()
-    ne = pirate.investigate_ne()
-    sw = pirate.investigate_sw()
-    se = pirate.investigate_se()
+    nw = pirate.investigate_nw()[0]
+    ne = pirate.investigate_ne()[0]
+    sw = pirate.investigate_sw()[0]
+    se = pirate.investigate_se()[0]
     tp = pirate.trackPlayers()
     squad=_id%4
         
     # if island is not captured by us squad[2] will go to the island   
+    if pirate.investigate_up()[1] == 'friend':
+        moveAway(x, y-1, pirate)
+    if pirate.investigate_down()[1] == 'friend':
+        moveAway(x, y+1, pirate)
+    if pirate.investigate_left()[1] == 'friend':
+        moveAway(x-1, y, pirate)
+    if pirate.investigate_right()[1] == 'friend':
+        moveAway(x+1, y, pirate)
+    if pirate.investigate_nw()[1] == 'friend':
+        moveAway(x-1, y-1, pirate)
+    if pirate.investigate_ne()[1] == 'friend':
+        moveAway(x+1, y-1, pirate)
+    if pirate.investigate_sw()[1] == 'friend':
+        moveAway(x-1, y+1, pirate)
+    if pirate.investigate_se()[1] == 'friend':
+        moveAway(x+1, y+1, pirate)
 
     # scouting captured island
     position = pirate.getPosition()
