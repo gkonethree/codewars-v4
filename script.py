@@ -2,7 +2,7 @@ import random
 import math
 
 
-name = "SCRIPT"
+name = "Coderiders"
 
 
 def moveTo(x, y, Pirate):
