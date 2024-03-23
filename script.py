@@ -386,6 +386,7 @@ def ActTeam(team):
     
 
 def Direction(pirate):
+    _id=int(pirate.getID())
     up = pirate.investigate_up()
     down = pirate.investigate_down()
     left = pirate.investigate_left()
@@ -435,47 +436,66 @@ def Direction(pirate):
             signal = '2' + signal[1:]
         pirate.setSignal(signal)
     dir = pirate.getSignal()[0]
-    if int(pirate.getID())%4 == 0 or int(pirate.getID())%4 == 1:
-        if dir == '1':  
-            arr = [3, 2]
-            return random.choice(arr)
-        if dir == '2':
-            arr = [3, 4]
-            return random.choice(arr)
-        if dir == '3':
-            arr = [1, 4]
-            return random.choice(arr)
-        if dir == '4':
-            arr = [1, 2]
-            return random.choice(arr)
-    if int(pirate.getID())%4 == 2:
-        if dir == '1':  
-            arr = [2,2,2,2,3]
-            print(random.choice(arr))
-            return random.choice(arr)
-        if dir == '2':
-            arr = [3, 4,4,4,4]
-            return random.choice(arr)
-        if dir == '3':
-            arr = [1, 4,4,4,4]
-            return random.choice(arr)
-        if dir == '4':
-            arr = [1, 2,2,2,2]
-            return random.choice(arr)
-    if int(pirate.getID())%4 == 3:
-        if dir == '1':  
-            arr = [2,3,3,3,3]
-            return random.choice(arr)
-        if dir == '2':
-            arr = [3, 3,3,4,3]
-            return random.choice(arr)
-        if dir == '3':
-            arr = [1, 1,1,4,1]
-            return random.choice(arr)
-        if dir == '4':
-            arr = [1, 1,1,2,1]
-            return random.choice(arr)
-        # return random.randint(1,4)
+    total_number = int(pirate.getTeamSignal().split(',')[12])
+    sin = float(round(float(math.sin((int(pirate.getID())/total_number)*math.pi/2)),2))    
+    cos = float(round(float(math.cos((int(pirate.getID())/total_number)*math.pi/2)),2))
+    x = pirate.getDimensionX()
+    if dir == '1':      
+        # arr = np.array([3, 2])
+        if int(pirate.getID()) % 2 == 0:
+            if pirate.getPosition() == (x-int(pirate.getID())%x,int(pirate.getID())%x):
+                pirate.setSignal(pirate.getSignal()[:2]+'d'+pirate.getSignal()[3:])
+            if pirate.getSignal()[2] == 'd':
+                return random.choice([3,2])
+            return moveTo(x-int(pirate.getID())%x,int(pirate.getID())%x,pirate)
+        else:
+            if pirate.getPosition() == (int(pirate.getID())%x,x-int(pirate.getID())%x):
+                pirate.setSignal(pirate.getSignal()[:2]+'d'+pirate.getSignal()[3:])
+            if pirate.getSignal()[2] == 'd':
+                return random.choice([3,2])
+            return moveTo(int(pirate.getID())%x,x-int(pirate.getID())%x,pirate)
+    elif dir == '2':
+        # arr = np.array([3, 4])
+        if int(pirate.getID()) % 2 == 0:
+            if pirate.getPosition() == (int(pirate.getID())%x,int(pirate.getID())%x):
+                pirate.setSignal(pirate.getSignal()[:2]+'d'+pirate.getSignal()[3:])
+            if pirate.getSignal()[2] == 'd':
+                return random.choice([3,4])
+            return moveTo(int(pirate.getID())%x,int(pirate.getID())%x,pirate)
+        else:
+            if pirate.getPosition() == (int(pirate.getID())%x,int(pirate.getID())%x):
+                pirate.setSignal(pirate.getSignal()[:2]+'d'+pirate.getSignal()[3:])
+            if pirate.getSignal()[2] == 'd':
+                return random.choice([3,4])
+            return moveTo(int(pirate.getID())%x,int(pirate.getID())%x,pirate)
+    elif dir == '3':
+        # arr = np.array([1, 4])
+        if int(pirate.getID()) % 2 == 0:
+            if pirate.getPosition() == (x-int(pirate.getID())%x,int(pirate.getID())%x):
+                pirate.setSignal(pirate.getSignal()[:2]+'d'+pirate.getSignal()[3:])
+            if pirate.getSignal()[2] == 'd':
+                return random.choice([1,4])
+            return moveTo(x-int(pirate.getID())%x,int(pirate.getID())%x,pirate)
+        else:
+            if pirate.getPosition() == (int(pirate.getID())%x,x-int(pirate.getID())%x):
+                pirate.setSignal(pirate.getSignal()[:2]+'d'+pirate.getSignal()[3:])
+            if pirate.getSignal()[2] == 'd':
+                return random.choice([1,4])
+            return moveTo(int(pirate.getID())%x,x-int(pirate.getID())%x,pirate)
+    elif dir == '4':
+        # arr = np.array([1, 2])
+        if int(pirate.getID()) % 2 == 0:
+            if pirate.getPosition() == (int(pirate.getID())%x,int(pirate.getID())%x):
+                pirate.setSignal(pirate.getSignal()[:2]+'d'+pirate.getSignal()[3:])
+            if pirate.getSignal()[2] == 'd':
+                return random.choice([1,2])
+            return moveTo(int(pirate.getID())%x,int(pirate.getID())%x,pirate)
+        else:
+            if pirate.getPosition() == (int(pirate.getID())%x,int(pirate.getID())%x):
+                pirate.setSignal(pirate.getSignal()[:2]+'d'+pirate.getSignal()[3:])
+            if pirate.getSignal()[2] == 'd':
+                return random.choice([1,2])
+            return moveTo(int(pirate.getID())%x,int(pirate.getID())%x,pirate)
 
 def IslandCenter(pirate,position):
     x = int(position[0])
